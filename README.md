@@ -2,13 +2,13 @@
 
 My thesis is constructed of several .tex files (and a .bib for the bibliography). 
 
-NG_Thesis.tex is the main file. It contains the preamble and other general formatting information. It refers to and inserts the other files as necessary.
+__NG_Thesis.tex__ is the main file. It contains the preamble and other general formatting information. It refers to and inserts the other files as necessary.
 
-NG_abstract.tex contains the abstract.
+__NG_abstract.tex__ contains the abstract.
 
-NG_intro.tex contains the first chapter. It is the introductory chapter contianing the problem statement and background information on microgrids and other relevant information.
+__NG_intro.tex__ contains the first chapter. It is the introductory chapter contianing the problem statement and background information on microgrids and other relevant information.
 
-NG_bib.bib contain bibliographical information of each of my cited sources.
+__NG_bib.bib__ contains bibliographical information of each of my cited sources.
 
 
 There are probably several methods to generate a pdf. Here is one:
