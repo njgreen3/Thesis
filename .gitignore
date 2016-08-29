@@ -4,4 +4,11 @@
 *.out
 *.bbl
 *.bak
+*.toc
+*.tof
+*.lot
+*.idx
+*.ind
+*.ilg
+*.pdf
 *~
