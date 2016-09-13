@@ -1,10 +1,15 @@
 \documentclass[a4paper,12pt]{report}
+
+%allows for hyperlink
 \usepackage{hyperref}
 %\usepackage{url}
 
-\usepackage{etoolbox}
+%allows for degree symbol, among other things presumably
+\usepackage{textcomp}
+
 % These lines allow me to change the spacing at the start of a new chapter.
 % I have replaced the default 50 pt space with nothing
+\usepackage{etoolbox}
 \makeatletter
 \patchcmd{\@makechapterhead}{\vspace*{50\p@}}{}{}{}
 \patchcmd{\@makeschapterhead}{\vspace*{50\p@}}{}{}{}
