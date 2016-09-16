@@ -1,4 +1,6 @@
-\documentclass[a4paper,12pt]{report}
+%\documentclass[a4paper,12pt]{report}
+\documentclass[12pt]{uafthesis}
+%\pagestyle{plain}
 
 %allows for hyperlink
 \usepackage{hyperref}
@@ -7,13 +9,27 @@
 %allows for degree symbol, among other things presumably
 \usepackage{textcomp}
 
-% These lines allow me to change the spacing at the start of a new chapter.
-% I have replaced the default 50 pt space with nothing
-\usepackage{etoolbox}
-\makeatletter
-\patchcmd{\@makechapterhead}{\vspace*{50\p@}}{}{}{}
-\patchcmd{\@makeschapterhead}{\vspace*{50\p@}}{}{}{}
-\makeatother
+%draws bounding boxes around the major page elements. For troubleshooting
+%\usepackage[showframe]{geometry}
+
+\usepackage{amsmath, amssymb, amsfonts} % Thanks, AMS!
+\usepackage{fixltx2e} % Allows \(\) in captions, amongst other things.
+%\usepackage{ppl} % The Paladino font (tough to find?)
+\usepackage{pxfonts} % Paladino-like fonts
+\usepackage{graphicx, float} % Graphics stuff
+\usepackage{verbatim} % Mostly for the comment environment.
+%\usepackage{chapterbib} % This is an option for those bundling papers.
+%\usepackage[square]{natbib}
+%\usepackage{tocbibind} % This fixes the "bibliography in ToC" problem.
+                        % Use with chapterbib.
+
+%% These lines allow me to change the spacing at the start of a new chapter.
+%% I have replaced the default 50 pt space with nothing
+%\usepackage{etoolbox}
+%\makeatletter
+%\patchcmd{\@makechapterhead}{\vspace*{50\p@}}{}{}{}
+%\patchcmd{\@makeschapterhead}{\vspace*{50\p@}}{}{}{}
+%\makeatother
 
 %certain default hyphenations aren't what I want
 \hyphenation{geo-ther-mal non-re-new-able}
@@ -21,14 +37,34 @@
 \author{Nathan Green}
 \title{Stability and Cost Analysis of DC Bus Architecture for Power Generation and AC Distribution on Renewable Energy-Diesel Microgrids}
 
+\degreeyear{2017}
+\degreemonth{May}
+\degree{Master of Science}
+\department{Dept. of Electrical Engineering}
+\numberofmembers{3} % Make sure this is right! The grad school hates empty
+                    % signature lines.
+\committeewidth{4in}
+\approvedwidth{4in}
+\comitteespace{\hfill}
+\approvedspace{\hfill}
+
+\prevdegrees{B.S.}
+\college{College of Engineering and Mines}
 
 \begin{document}
 
+%\makesig
 %\maketitle
 
-%\tableofcontents
+%\include{NG_abstract}
 
-\include{NG_abstract}
+%Table of Contents and such
+%\tableofcontents
+%\listoffigures
+%\listoftables
+%\listofothermaterials
+%\listofappendices
+
 
 \include{NG_intro}
 

@@ -6,6 +6,8 @@
 *.bak
 *.toc
 *.tof
+*.loa
+*.lof
 *.lot
 *.idx
 *.ind
