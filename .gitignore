@@ -13,4 +13,6 @@
 *.ind
 *.ilg
 *.pdf
+*.gz
+*.zip
 *~
