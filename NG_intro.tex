@@ -53,9 +53,30 @@ A microgrid control system ties all the other components together. Control syste
 
 Grid forming units set the frequency and voltage levels of the microgrid. Grid following units control the power\footnote{Active and reactive.} supplied to the grid based on external reference values from the loads. As loads demand more power, a grid following unit will supply more power within is capabilities. Grid supporting units provide power based on voltage and frequency regulation. They assist the grid forming unit with maintaining the voltage and frequency while also supplying power. Grid parallel units also supply power to the grid, but it is based on reference values of a source. These units typically incorporate a Maximum Power Point Tracking (MPPT) algorithm in order to producs as much power as is available. They are used with intermittent sources such as wind turbines and solar PV arrays. 
 
-Control over DER and conversion units can also be catagorized by whether or not communication is used. Typically communication among units can yield more precise power sharing and set points but the necessary communication lines can introduce additional costs and points of failure \cite{Vandoorn2013}. Furthermore, control strategies that do not require communication are easier to expanded and provide redundancy because coordination among controller units is less complex. Methods of communication based control includes centralized control, distributed control, Master/Slave control, etc. Method of non-communication based control includes droop control as well as frequency based signal injection.
+Control over DER and conversion units can also be catagorized by whether or not communication is used. Typically communication among units can yield more precise power sharing and set points but the necessary communication lines can introduce additional costs and points of failure \cite{Vandoorn2013}. Furthermore, control strategies that do not require communication are easier to expanded and provide redundancy because coordination among controller units is less complex. Methods of communication based control includes centralized control, distributed control, Master/Slave control, etc. Methods of non-communication based control includes droop control as well as frequency based signal injection.
 
-Centralized control schemes make use of two way communication where a central controller sets the priorities of local DER and load controllers during regular intervals. The priorites are determined from a predefinded optimazation algorithm and uses inputs of the suply and demand from the local controllers, as well as market costs during the previous interval \cite{Katiraei2008}. Distributed control schemes also use a centralized control unit to regulate the set points of the local control units, but simpler communications are used. The central control unit responds more slowly to disturbances than the local controllers, but helps ensure they share power evenly in steady state conditions \cite{Prodanovic2006}.
+Centralized control schemes make use of two way communication where a central controller sets the priorities of local DER and load controllers during regular intervals. The priorites are determined from a predefinded optimazation algorithm and uses inputs of the suply and demand from the local controllers, as well as market costs during the previous interval \cite{Katiraei2008}. Distributed control schemes also use a centralized control unit to regulate the set points of the local control units, but simpler communications are used. The central control unit responds more slowly to disturbances than the local controllers, but helps ensure they share power evenly in steady state conditions \cite{Prodanovic2006}.  
+
+The droop control method originated with the relationship between frequency and active power for synchronous machines due to rotating inertia. As a load increases the machine will slow and its frequency will droop. It is mathematically derived from the equation describing active power flow through an impedance $ R + jX $ from point 1 to point 2.
+\begin{equation}
+P = \frac{V_{1}}{R^2 + X^2} \left( R \left( V_{1}-V_{2}\cos{\delta_{12}} \right) +X V_{2}\sin{\delta_{12}} \right) }
+\end{equation}
+Assuming small phase angle $\delta_{12}$ between the points as well as negligable resistance $R$, the equation can be reduced to 
+\begin{equation}
+P = \frac{V_1V_2}{X}\delta_{12}
+\end{equation}
+%A pertebation in the phase angle can be related to frequency by the relation 
+%\begin{equation}
+%\frac{d}{dt}\Delta\delta_ = \omega
+Similarly the relationship between reactive power flow and relative voltage levels can be shown by
+\begin{equation}
+Q = \frac{V_1}{R^2 + X^2} \left( -R V_2 \sin{\delta_{12}} + X \left(V_1 - V_2 \cos{\delta_{12}}\right) \right) } 
+\end{equation}
+\begin{equation}
+Q = \frac{V_1}{X} \left( V_1 - V_2 \right)
+\end{equation}
+
+It has since been adapted into power conversion control schemes as well despite the lack of physical inertia.
 %distributed control vs centralized
 %droop control vs Master/slave
 %Katiraei et al & Vandoorn et al
