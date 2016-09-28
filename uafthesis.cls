@@ -781,7 +781,7 @@ RECOMMENDED:\@comitteespace
       \fi
       \sloppy\clubpenalty4000\widowpenalty4000%
       \sfcode`\.=\@m
-      \@pageheadingtrue
+      %\@pageheadingtrue
       }
      {\def\@noitemerr
        {\@latex@warning{Empty `thebibliography' environment}}%
