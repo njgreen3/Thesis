@@ -58,6 +58,8 @@ Control over DER and conversion units can also be catagorized by whether or not 
 \subsubsection{Communication Based Control}
 Centralized control schemes make use of two way communication where a central controller sets the priorities of local DER and load controllers during regular intervals. The priorites are determined from a predefinded optimazation algorithm and uses inputs of the suply and demand from the local controllers, as well as market costs during the previous interval \cite{Katiraei2008}. Distributed control schemes also use a centralized control unit to regulate the set points of the local control units, but simpler communications are used. The central control unit responds more slowly to disturbances than the local controllers, but helps ensure they share power evenly in steady state conditions \cite{Prodanovic2006}. 
 
+In a master/slave relationship between different DER units, the master will operate in voltage control mode and the slave units in current control mode. Such a system may or may not include a central controller. Without a central controller, the master sets the current reference for the remaining units \cite{Siri1992}. If there is a central controller then it is the controller, not the master that sets the current references \cite{Chen1995}.
+
 \subsubsection{Non-Communication Based Control}
 The droop control method originated with the relationship between frequency and active power for synchronous machines due to rotating inertia. As a load increases the machine will slow and its frequency will droop. It has since been adapted into power conversion control schemes as well despite the lack of physical inertia. It is mathematically derived from the equation describing active power flow through an impedance $ R + jX $ from point 1 to point 2.
 \begin{equation}
@@ -69,7 +71,7 @@ P = \frac{V_1V_2}{X}\delta_{12}
 \end{equation}
 In practice, the frequency is used rather than the angle because individual units do not know the phase of other units due to the lack of communication. For power and frequency deviation from predefined references the droop equation becomes
 \begin{equation}
-f = f_{ref} + K_P\left(P - P_{ref}\right)
+f = f_{\text{ref}} + K_P\left(P - P_{\text{ref}}\right)
 \end{equation}
 where $K_P$ is a negative proportionality contstant.
 
@@ -81,9 +83,11 @@ Q = \frac{V_1}{R^2 + X^2} \left( -R V_2 \sin{\delta_{12}} + X \left(V_1 - V_2 \c
 Q = \frac{V_1}{X} \left( V_1 - V_2 \right)
 \end{equation}
 \begin{equation}
-V = V_{ref} + K_Q \left( Q - Q_{ref} \right)
+V = V_{\text{ref}} + K_Q \left( Q - Q_{\text{ref}} \right)
 \end{equation}
-where $K_Q$ is is a negative proportionality contstant. It should be noted, however, the droop equations are only valid under certain condidtions. If the angle/frequency deviations are too great then the small angle approximations will break down. Additionally, the relative magnitude of the resistive and reactive impedance components effect system dynamics. If the frequecy changes are too great then $X$ can no longer be considered constant. This means the P/f and V/Q relationships cannot be approximated as linear. Additionally, the line resistance in most low voltage systems is not so small as to be negligable. In fact in situtations where the line reactance is negligable compared to the resistance, then linear approximations can be made between active power and voltage as well as reactive power and frequency \cite{YunWeiLi2009}.
+where $K_Q$ is is a negative proportionality contstant. 
+
+It should be noted, however, the droop equations are only valid under certain condidtions. If the angle/frequency deviations are too great then the small angle approximations will break down. Additionally, the relative magnitude of the resistive and reactive impedance components effect system dynamics. If the frequecy changes are too great then $X$ can no longer be considered constant. This means the $P$/$f$ and $V$/$Q$ relationships cannot be approximated as linear. Additionally, the line resistance in most low voltage systems is not so small as to be negligable. In fact in situtations where the line reactance is negligable compared to the resistance, then linear approximations can be made between active power and voltage as well as reactive power and frequency \cite{YunWeiLi2009}.
 
 
 %distributed control vs centralized
