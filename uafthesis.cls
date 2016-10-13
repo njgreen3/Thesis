@@ -22,10 +22,11 @@
 %%
 %%  Edited by Nathan Green 2016/09/15
 %%        Changed myheadings definition to put page numbers centered in the footer
+%%        Subsubsections are now numbered
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{uafthesis}
-%%              [2016/09/15 v5.1 UAF thesis class]
+%%              [2016/10/15 v5.1 UAF thesis class]
 %%              [2011/04/20 v5.0 UAF thesis class]
 %%              [2004/08/17 v4.9 UAF thesis class]
 %%              [2002/12/18 v4.8 UAF thesis class]
@@ -328,7 +329,7 @@ RECOMMENDED:\@comitteespace
     \let\sectionmark\@gobble
     }
 \newcommand\chaptermark[1]{}
-\setcounter{secnumdepth}{2}
+\setcounter{secnumdepth}{3}
 \newcounter {part}
 \newcounter {chapter}
 \newcounter {section}[chapter]
@@ -340,7 +341,7 @@ RECOMMENDED:\@comitteespace
 \renewcommand\thechapter       {\arabic{chapter}}
 \renewcommand\thesection       {\thechapter.\arabic{section}}
 \renewcommand\thesubsection    {\thesection.\arabic{subsection}}
-\renewcommand\thesubsubsection {\thesubsection .\arabic{subsubsection}}
+\renewcommand\thesubsubsection {\thesubsection.\arabic{subsubsection}}
 \renewcommand\theparagraph     {\thesubsubsection.\arabic{paragraph}}
 \renewcommand\thesubparagraph  {\theparagraph.\arabic{subparagraph}}
 \newcommand\@chapapp{\chaptername}
@@ -635,7 +636,7 @@ RECOMMENDED:\@comitteespace
 \newcommand\@pnumwidth{1.55em}
 \newcommand\@tocrmarg {2.55em}
 \newcommand\@dotsep{4.5}
-\setcounter{tocdepth}{2}
+\setcounter{tocdepth}{3}
 \newcommand\tableofcontents{%
     \@chapteronefalse
     \if@arabic\relax\else\renewcommand{\thepage}{\roman{page}}\fi
