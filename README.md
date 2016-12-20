@@ -10,9 +10,15 @@ __NG_abstract.tex__ contains the abstract.
 
 __NG_intro.tex__ contains the first chapter. It is the introductory chapter contianing the problem statement and background information on microgrids and other relevant information.
 
+__NG_conv.tex__ contains the (probable) second chapter. It goes into more detail about power electronics converter devices, techniques, and topologies.
+
+__NG_geotherm.tex__ contains the (probable) third chapter. It goes into more detail about geothermal energy as well as the pilgrim resource.
+
 __NG_bib.bib__ contains bibliographical information of each of my cited sources.
 
 __tables__ directory contains .tex files of included tables.
+
+__images__ directory will contain images. Does not exist yet.
 
 There are probably several methods to generate a pdf. Here is one:
 To generate a .dvi on a linux system from scratch run "latex NG_Thesis.tex" once to generate the apropirate .aux files. 
