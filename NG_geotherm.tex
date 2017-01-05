@@ -1,24 +1,34 @@
 \chapter{Geothermal Energy}
 \label{ch:geothermal}
 
-\section{High and Low Enthalpy Sources}
-Enthalpy is the energy of a system available to be converted to work. It is related to the temperature of the geothermal resource
+\section{Enthalpy}
+Enthalpy describes the energy of a system available to be converted to work. It is related to the temperature of the geothermal resource, but also dependent on the pressure and volume. Temperature is usually the primary metric of a geothermal resource, but even a high temperture source is useless without sufficient volume flow. Quantiatively enthalpy is expressed as 
+\begin{equation}
+H = U + pV
+\end{equation}
+where $U$ is the internal energy, which is function of temperature, $p$ is the pressure of the system, and $V$ is the volume. Generally it is more convenient to use the change in enthalpy rather than absolute values. After any a system undogoes some thermodynamic process the system will always have some remaining internal energy, pressure, and volume. Therefore a change in enthalpy better describes the energy extracted from (or absorbed by) the system.
+
+Geothermal systems can be classified as high-, medium-, or low-enthalpy\footnote{While the technical definitions differ, the terms enthalpy, heat, and temperature are often interchanged when describing geothermal sources.}. Although there is no formal deliniation, high-enthalpy sources generally have tempertures greater than about $150$ \textcelsius{} ($302$ \textdegree{}F) and low-enthalpy sources have temperatures lower than $100$ \textcelsius{} ($212$ \textdegree{}F) \cite{Norden2011}. Depending on the amount of extractable energy of the resource, different geothermal processes or cycles should be used.
 
 \section{Geothermal Cycles}
 Describe each of the following but focus on cycles for low enthalpy sources
-\begin{description}
-\item[Dry Steam] High enthalpy - send hot steam directly through turbine then condensed and injected back underground
-\item[Flash Steam] High enthalpy - high pressure hot water is allowed to boil becoming steam and low pressure hot water. Steam is sent through turbine then condensed, recombined with water, and injected back underground
-\item[Binary Cycle] Technically not limited to low enthalpy. Two loops, heat source loop and working fluid loop. Can be divided into
-\begin{description}
-\item[(Organic) Rankine Cycle]
-\item[Kalina Cycle]
-\end{description}
-\end{description}
+
+\subsection{Dry Steam}
+This high-enthalpy processes extract hot steam from the earth. The steam is sent directly through a turbine then condensed into liquid water and injected back underground. 
+
+\subsection{Flash Steam} 
+In the flash steam process high pressure hot is water extracted then allowed to boil becoming steam and low pressure hot water. The steam is sent through a turbine then condensed, recombined with water, and injected back underground.
+
+\subsection{Binary Cycle} 
+As the name implies, binary cycles involve two loops: a heat source loop and working fluid loop. Binary cycles are technically not limited to low-enthalpy resources, however high-enthalpy system can be implemented more simlply and directly with a single loop using the flash or dry steam processes. The most common binary cycle is the Organic Rankine Cycle (ORC) which uses an organic working fluid such as a refrigerant because its low vaporaization temperature.
+
+%\subsubsection{(Organic) Rankine Cycle}
+%\subsubsection{Kalina Cycle}
 
 \section{Synchronous and Asynchronous Generators}
 This section should focus the difference between the two with respect to geothermal sources. I can have a fundemental description of the generators either in this chapter or the intro chapter.
 
+Direct drives
 
 \section{Pilgrim Hot Springs}
 More thourough description of the resource and potential development plans.
