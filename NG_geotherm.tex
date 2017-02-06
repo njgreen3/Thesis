@@ -1,36 +1,61 @@
-\chapter{Geothermal Energy}
-\label{ch:geothermal}
+%This file used to contain the geothermal chapter, now contains thermal/mechanical section of the conversion chapter
+\section{Thermal Energy}
+Thermal energy, or heat, can originate from many different sources including combustion of a fuel, radioactive decay, or absorption of light from the sun. Heat can be used directly to warm a building, but it is also a critical step in most traditional methods of generating electrical power. 
+%\chapter{Geothermal Energy}
+%\label{ch:geothermal}
 
-\section{Enthalpy}
-Enthalpy describes the energy of a system available to be converted to work. It is related to the temperature of the geothermal resource, but also dependent on the pressure and volume. Temperature is usually the primary metric of a geothermal resource, but even a high temperture source is useless without sufficient volume flow. Quantiatively enthalpy is expressed as 
+\subsection{Enthalpy}
+Enthalpy describes the energy of a system available to be converted to work. It is related to the temperature of the geothermal resource, but also dependent on the pressure and volume. Temperature is usually the primary metric of a geothermal resource, but even a high temperature source is useless without sufficient volume flow. Quantitatively enthalpy is expressed as 
 \begin{equation}
 H = U + pV
 \end{equation}
-where $U$ is the internal energy, which is function of temperature, $p$ is the pressure of the system, and $V$ is the volume. Generally it is more convenient to use the change in enthalpy rather than absolute values. After any a system undogoes some thermodynamic process the system will always have some remaining internal energy, pressure, and volume. Therefore a change in enthalpy better describes the energy extracted from (or absorbed by) the system.
+where $U$ is the internal energy, which is function of temperature, $p$ is the pressure of the system, and $V$ is the volume. Generally it is more convenient to use the change in enthalpy rather than absolute values. After any a system undergoes some thermodynamic process the system will always have some remaining internal energy, pressure, and volume. Therefore a change in enthalpy better describes the energy extracted from (or absorbed by) the system.
 
-Geothermal systems can be classified as high-, medium-, or low-enthalpy\footnote{While the technical definitions differ, the terms enthalpy, heat, and temperature are often interchanged when describing geothermal sources.}. Although there is no formal deliniation, high-enthalpy sources generally have tempertures greater than about $150$ \textcelsius{} ($302$ \textdegree{}F) and low-enthalpy sources have temperatures lower than $100$ \textcelsius{} ($212$ \textdegree{}F) \cite{Norden2011}. Depending on the amount of extractable energy of the resource, different geothermal processes or cycles should be used.
+Geothermal systems can be classified as high-, medium-, or low-enthalpy\footnote{While the technical definitions differ, the terms enthalpy, heat, and temperature are often used interchangeably when describing geothermal sources.}. Although there is no formal delineation, high-enthalpy sources generally have temperatures greater than about $150$ \textcelsius{} ($302$ \textdegree{}F) and low-enthalpy sources have temperatures lower than $100$ \textcelsius{} ($212$ \textdegree{}F) \cite{Norden2011}. Depending on the amount of extractable energy of the resource, different geothermal processes or cycles should be used.
 
-\section{Geothermal Cycles}
-Describe each of the following but focus on cycles for low enthalpy sources
+\subsection{Geothermal Cycles}
+%%Describe each of the following but focus on cycles for low enthalpy sources
 
-\subsection{Dry Steam}
-This high-enthalpy processes extract hot steam from the earth. The steam is sent directly through a turbine then condensed into liquid water and injected back underground. 
 
-\subsection{Flash Steam} 
+\subsubsection{Dry Steam}
+This high-enthalpy processes extracts hot steam from the earth. The steam is sent directly through a turbine then condensed into liquid water and injected back underground. 
+
+\subsubsection{Flash Steam} 
 In the flash steam process high pressure hot is water extracted then allowed to boil becoming steam and low pressure hot water. The steam is sent through a turbine then condensed, recombined with water, and injected back underground.
 
-\subsection{Binary Cycle} 
-As the name implies, binary cycles involve two loops: a heat source loop and working fluid loop. Heat collected in the heat sources loop and transferred to the working loop through a heat exchanger. The working fluid then undgoes the vaporization process to spin a turbine. Binary cycles are technically not limited to low- or medium-enthalpy resources, however high-enthalpy system can be implemented directly with a single loop using the flash or dry steam processes. The most common binary cycle is the Organic Rankine Cycle (ORC) which uses an organic working fluid such as a refrigerant because its low vaporaization temperature relative to water.
+\subsubsection{Binary Cycle} 
+As the name implies, binary cycles involve two loops: a heat source loop and working fluid loop. Heat is collected in the heat source loop and transferred to the working loop through a heat exchanger. The working fluid then undergoes the vaporization process to spin a turbine or screw expander. Binary cycles are technically not limited to low- or medium-enthalpy resources, however high-enthalpy system can be implemented directly with a single loop using the flash or dry steam processes. The most common binary cycle is the Organic Rankine Cycle (ORC) which uses an organic working fluid such as refrigerants. Working fluids are selected for low vaporization temperatures relative to water.
 
 %\subsubsection{(Organic) Rankine Cycle}
 %\subsubsection{Kalina Cycle}
 
-\section{Synchronous and Asynchronous Generators}
-This section should focus the difference between the two with respect to geothermal sources. I can have a fundemental description of the generators either in this chapter or the intro chapter.
+\subsection{Synchronous and Asynchronous Generators}
+%This section should focus the difference between the two with respect to geothermal sources. I can have a fundemental description of the generators either in this chapter or the intro chapter.
 
-Direct drives
+%Direct drives
 
-\section{Pilgrim Hot Springs}
-More thourough description of the resource and potential development plans.
+%\subsection{Pilgrim Hot Springs}
+%More thourough description of the resource and potential development plans.
 
-
+\subsection{ORC Manufacturers and Developers}
+\subsubsection{Under Development}
+\begin{description}
+\item[Air Squared]
+\item[Termo2Power]
+\item[Climeon]
+\item[Calnetix/Access Energy]
+\item[Verdicorp] has a range of variable speed expanders. The expander connects to the rotor of a permanent magnet synchronous generator. An IGBT variable frequency drive converts and synchronizes the power with a local grid.
+\item[Inifinity Turbine]
+\item[Ener-G-Rotors]
+\item[Phoenix]
+\end{description}
+\subsubsection{Commercial Products}
+\begin{description}
+\item[Electratherm] makes use of a twin screw expander to spin an induction generator.
+\item[E-Rationale] uses a single screw expander to rotate an induction generator.
+\item[Exergy] %radial outflow turbine
+\item[Zuccato] uses a radial inflow turbine directly connected to synchronous permanent magnet generator. Electric power is converted and synchronized to local power grid with IGBT switching.
+\item[Enogia] uses a turboexpander. Electric power is rectified then tied into the grid with a grid feed inverter.
+\item[Clean Energy Technologies] %uses high speed turbine 
+\item[Tri-O-Gen] %uses high speed turbine 
+\end{description}
