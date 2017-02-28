@@ -11,11 +11,10 @@ H = U + pV
 \end{equation}
 where $U$ is the internal energy, which is function of temperature, $p$ is the pressure of the system, and $V$ is the volume. Generally it is more convenient to use the change in enthalpy rather than absolute values. After any a system undergoes some thermodynamic process the system will always have some remaining internal energy, pressure, and volume. Therefore a change in enthalpy better describes the energy extracted from (or absorbed by) the system.
 
-Geothermal systems can be classified as high-, medium-, or low-enthalpy\footnote{While the technical definitions differ, the terms enthalpy, heat, and temperature are often used interchangeably when describing geothermal sources.}. Although there is no formal delineation, high-enthalpy sources generally have temperatures greater than about $150$ \textcelsius{} ($302$ \textdegree{}F) and low-enthalpy sources have temperatures lower than $100$ \textcelsius{} ($212$ \textdegree{}F) \cite{Norden2011}. Depending on the amount of extractable energy of the resource, different geothermal processes or cycles should be used.
 
 \subsection{Geothermal Cycles}
 %%Describe each of the following but focus on cycles for low enthalpy sources
-
+Geothermal systems can be classified as high-, medium-, or low-enthalpy\footnote{While the technical definitions differ, the terms enthalpy, heat, and temperature are often used interchangeably when describing geothermal sources.}. Although there is no formal delineation, high-enthalpy sources generally have temperatures greater than about $150$ \textcelsius{} ($302$ \textdegree{}F) and low-enthalpy sources have temperatures lower than $100$ \textcelsius{} ($212$ \textdegree{}F) \cite{Norden2011}. Depending on the amount of extractable energy of the resource, different geothermal processes or cycles should be used.
 
 \subsubsection{Dry Steam}
 This high-enthalpy processes extracts hot steam from the earth. The steam is sent directly through a turbine then condensed into liquid water and injected back underground. 
@@ -24,19 +23,31 @@ This high-enthalpy processes extracts hot steam from the earth. The steam is sen
 In the flash steam process high pressure hot is water extracted then allowed to boil becoming steam and low pressure hot water. The steam is sent through a turbine then condensed, recombined with water, and injected back underground.
 
 \subsubsection{Binary Cycle} 
-As the name implies, binary cycles involve two loops: a heat source loop and working fluid loop. Heat is collected in the heat source loop and transferred to the working loop through a heat exchanger. The working fluid then undergoes the vaporization process to spin a turbine or screw expander. Binary cycles are technically not limited to low- or medium-enthalpy resources, however high-enthalpy system can be implemented directly with a single loop using the flash or dry steam processes. The most common binary cycle is the Organic Rankine Cycle (ORC) which uses an organic working fluid such as refrigerants. Working fluids are selected for low vaporization temperatures relative to water.
+As the name implies, binary cycles involve two loops: a heat source loop and working fluid loop. Heat is collected in the heat source loop and transferred to the working loop through a heat exchanger. The working fluid then undergoes the vaporization process to spin a turbine or other type of expander. The expander is connected to a generator which converts the rotational mechanical energy into electrical energy. The fluids within the two cycles each must be moved along using pumps. The pumps themselves need to be powered and act as a parasitic load to the system.
+
+Binary cycles are technically not limited to low- or medium-enthalpy heat sources. The most common binary cycle is the Rankine Cycle. In an ideal Rankine Cycle heat is added to the working fluid under high pressure to change its phase from liquid to gas. The fluid expands isentropically\footnote{In thermodynamics, isentropic processes do not have an net change in entropy} which rotates and provides work to the shaft while temperature and pressure drop. Heat is then expelled from the fluid as it condenses at a constant low pressure. Finally the fluid is isentropically pumped back to the high pressure and the process begins again.
+
+For geothermal sources, generally high-enthalpy systems can be implemented directly with a single loop using the flash or dry steam processes. However, for lower enthalpy systems, water cannot be used as a working fluid because the temperatures are not hot enough to vaporize it. In these cases an Organic Rankine Cycle can be used instead, which uses an organic working fluid such as refrigerants instead of water. Working fluids are typically selected for relatively low vaporization temperatures, but the thermodynamic states of the heat source also affect the choice. [site examples/conditions] The selection of the type of expander and pumps are discussed in Kreider. \cite{Kreider} Generally larger diameter expanders operate at lower speeds.
+
+
 
 %\subsubsection{(Organic) Rankine Cycle}
 %\subsubsection{Kalina Cycle}
 
 \subsection{Synchronous and Asynchronous Generators}
 %This section should focus the difference between the two with respect to geothermal sources. I can have a fundemental description of the generators either in this chapter or the intro chapter.
+As previously described, asynchronous generators, also called induction generators, are incapable maintaining a grid. This is because they need to consume some reactive power in order to maintain their magnetic field, where as synchronous generators supply or absorb reactive power depending on the needs of the grid.
 
+\subsubsection{Synchronous Generators}
+Synchronous generators are capable of supplying reactive power because the internal magnetic field is not self induced. Instead the field is generated by either a rotating DC current or permanent magnets
+\subsubsection{Asynchronous Generators}
 %Direct drives
 
 %\subsection{Pilgrim Hot Springs}
+%Do this in 1st chapter not conv/geotherm chapter
 %More thourough description of the resource and potential development plans.
 
+\begin{comment}
 \subsection{ORC Manufacturers and Developers}
 \subsubsection{Under Development}
 \begin{description}
@@ -59,3 +70,5 @@ As the name implies, binary cycles involve two loops: a heat source loop and wor
 \item[Clean Energy Technologies] %uses high speed turbine 
 \item[Tri-O-Gen] %uses high speed turbine 
 \end{description}
+\end{comment}
+
