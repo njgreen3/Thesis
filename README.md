@@ -20,7 +20,7 @@ __tables__ directory contains .tex files of included tables.
 
 __images__ directory will contain images. Does not exist yet.
 
-__old__ directory contains some old versions of file before I started using real version control/git.
+__old__ directory contains some old versions of files before I started using real version control/git.
 
 There are probably several methods to generate a pdf. Here is one:
 To generate a .dvi on a linux system from scratch run "latex NG_Thesis.tex" once to generate the apropirate .aux files. 
