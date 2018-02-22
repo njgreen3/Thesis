@@ -18,7 +18,7 @@ __NG_bib.bib__ contains bibliographical information of each of my cited sources.
 
 __tables__ directory contains .tex files of included tables.
 
-__images__ directory will contain images. Does not exist yet.
+__figures__ directory contains diagrams, figures, and images. 
 
 __old__ directory contains some old versions of files before I started using real version control/git.
 
