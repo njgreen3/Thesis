@@ -1,0 +1,46 @@
+\documentclass[a4paper,12pt]{report}
+%\documentclass[12pt]{uafthesis}
+
+
+%allows for hyperlink
+\usepackage{hyperref}
+
+%\usepackage{url}
+
+%allows for degree symbol, among other things presumably
+\usepackage{textcomp}
+
+%draws bounding boxes around the major page elements. For troubleshooting
+%\usepackage[showframe]{geometry}
+\usepackage[margin=0.2in]{geometry}
+
+%Allows for drawing circuit diagrams
+%\usepackage[siunitx]{circuitikz}
+\usepackage{circuitikz}
+
+\usepackage{multirow}
+
+\usepackage{amsmath, amssymb, amsfonts} % Thanks, AMS!
+\usepackage{fixltx2e} % Allows \(\) in captions, amongst other things.
+%\usepackage{ppl} % The Paladino font (tough to find?)
+\usepackage{pxfonts} % Paladino-like fonts
+\usepackage{graphicx, float} % Graphics stuff
+\usepackage{verbatim} % Mostly for the comment environment.
+%\usepackage{chapterbib} % This is an option for those bundling papers.
+%\usepackage[square]{natbib}
+%\usepackage{tocbibind} % This fixes the "bibliography in ToC" problem.
+                        % Use with chapterbib.
+
+
+
+
+
+\begin{document}
+
+
+%Each table is included
+
+\include{simple_rectifier}
+
+
+\end{document}

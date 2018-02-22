@@ -1,0 +1,28 @@
+\begin{figure}
+	
+\caption{Simplified diagram of a single phase full-bridge rectifier.}
+\label{fig:simple_rectifier}
+
+
+\begin{tikzpicture}
+\draw[color=black, thick]
+% AC leads
+%(0,1) to [short] (4,1) to [short] (4,2){} 
+(0,1) -- (4,1) -- (4,2){} 
+(0,1) to [sV, l=$v_{ac}$] (0,7) -- (4,7) -- (4,6){}
+
+%Rectifier Diode Bridge
+(2,4) to [D*, *-*] (4,6) to [D*, *-*] (6,4){}
+(2,4) to [D*, *-*] (4,2) to [D*, *-*] (6,4){}
+
+%DC leads
+(2,4) -- (1,4) -- (1,0) to [short, -o] (9,0){}
+(6,4) to [short, -o] (9,4){}
+
+%Output 
+(7,4) to [C, *-*] (7,0){}
+(9,4) to [open, l=$v_{dc}$] (9,0)
+;
+\end{tikzpicture}
+
+\end{figure}

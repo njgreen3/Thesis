@@ -54,15 +54,18 @@ Electronic conversion devices take a form of electrical power (AC or DC) and con
 
 \subsubsection{DC-DC}
 %description, diagram, and waveform of simple buck and boost converters
-DC-DC power conversion devices can generally be divided up into two simple designs: buck to step voltage down and boost to step voltage up. The concepts used in these two designs can be modified or combined to create a number of different DC-DC converter topologies with slightly different characteristics. These include but are not limited to \'Cuk, SEPIC, Flyback, Forward, Half-bridge, and Full-bridge converters.
+DC-DC power conversion devices can generally be divided up into two simple designs: buck to step voltage down and boost to step voltage up. The concepts used in these two designs can be modified or combined to create a number of  DC-DC converter topologies with slightly different characteristics. These include but are not limited to \'Cuk, SEPIC, Flyback, Forward, Half-bridge, and Full-bridge converters.
 
 In a simple Buck converter, seen in fig X, timed switching sets the average output voltage to the desire level. The inductor ensures ensures a continuous current at the output and the capacitor provides a steady voltage. Example waveforms of input and output current and voltage can be seen for a simple buck converter in fig X.
 
 %In a simple Boost converter, seen in fig X, timed switching also sets the average output voltage to the desire level. However, the placement of the inductor ensures ensures a continuous current at the output and the capacitor provides a steady voltage. Example waveforms of input and output current and voltage can be seen for a simple buck converter in fig X.
 
 \subsubsection{Rectifier}
-description, diagram, and waveform of simple rectifier
-%Rectifiers use 
+%description, diagram, and waveform of simple rectifier
+Rectifiers use a combination of diodes to convert an AC voltage to DC. \autoref{fig:simple_rectifier} shows a simple example of a single phase rectifier. The diodes allow a path such that the DC current always flows in the same direction regardless of AC polarity. Example waveforms of input and output current and voltage can be seen for a simple buck converter in fig X.
+
+\input{figures/simple_rectifier}
+
 
 \subsubsection{Inverter}
 description, diagram, and waveform of simple inverter
@@ -120,7 +123,7 @@ It should be noted, however, the droop equations are only valid under certain co
 AC microgrids and DC microgrids are both technically feasible, but the selection of which is optimal heavily depends on the types of loads and power sources used. Furthermore, the choice is not necessarily a binary decision. AC/DC hybrid systems can provide benefits of each, but at greater cost. This section will compare and contrast the different architectures.
 
 \subsection{Efficiency}
-In each conversion step there is some power loss due to inefficiencies. Sequential conversions can add up to a significant losses. Distributing AC and DC power to their respective loads separately can eliminate many conversion steps but it is unrealistic to completely eliminate all steps. \autoref{tab:conv_eff} shows that, at rated values, typical losses among different power converters are not symmetric. Transformers are the most efficient, followed by inverters and DC-DC converters. Rectifiers are experience the most loss. When operated below rated values all conversion devices experience drops in efficiency
+In each conversion step there is some power loss due to inefficiencies. Sequential conversions can add up to a significant losses. Distributing AC and DC power to their respective loads separately can eliminate many conversion steps but it is unrealistic to completely remove all steps. \autoref{tab:conv_eff} shows that, at rated values, typical losses among different power converters are not symmetric. Transformers are the most efficient, followed by inverters and DC-DC converters. Rectifiers are experience the most loss. When operated below rated values all conversion devices experience drops in efficiency
 
 \input{tables/conv_eff_table} 
 % Keep a look out for conversion efficiency more recent than 2006 and 2008
