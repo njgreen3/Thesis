@@ -1,0 +1,30 @@
+\begin{figure}
+	
+\centering
+\caption{Simplified diagram of a single phase buck converter.}
+\label{fig:simple_buck}
+
+
+\begin{tikzpicture}[american voltages]
+\draw[color=black, thick]
+%Input
+(0,0) to [V, l=$v_{in}$, invert] (0,3){}
+
+%high 
+(3,3) to [D*] (5,3) -- (6,3){}
+
+%switch
+(0,3) to [Tnmos] (3,3) {}
+
+%inductor
+(3,0) to [L, *-*] (3,3)
+
+%low
+(0,0) -- (6,0){}
+
+%output
+(6,3) to [open, l=$v_{out}$, o-o] (6,0)
+;
+\end{tikzpicture}
+
+\end{figure}
