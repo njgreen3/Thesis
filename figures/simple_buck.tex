@@ -1,7 +1,7 @@
 \begin{figure}
 	
 \centering
-\caption{Simplified diagram of a single phase buck converter.}
+\caption{Simplified diagram of a buck converter.}
 \label{fig:simple_buck}
 
 
@@ -11,19 +11,20 @@
 (0,0) to [V, l=$v_{in}$, invert] (0,3){}
 
 %high 
-(3,3) to [D*] (5,3) -- (6,3){}
+(3,3) to [L] (6,3) -- (7,3){}
 
 %switch
 (0,3) to [Tnmos] (3,3) {}
 
-%inductor
-(3,0) to [L, *-*] (3,3)
+%Diode
+(3,0) to [D*, *-*] (3,3){}
 
 %low
-(0,0) -- (6,0){}
+(0,0) -- (7,0){}
 
 %output
-(6,3) to [open, l=$v_{out}$, o-o] (6,0)
+(7,3) to [open, l=$v_{out}$, o-o] (7,0){}
+(6,3) to [C, *-*] (6,0){}
 ;
 \end{tikzpicture}
 
