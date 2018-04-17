@@ -14,6 +14,12 @@ __NG_conv.tex__ contains the (probable) second chapter. It goes into more detail
 
 __NG_geotherm.tex__ contains the (probable) third chapter. It goes into more detail about geothermal energy as well as the pilgrim resource.
 
+__NG_model.tex__ contains the chapter describing the model and the simulations.
+
+__NG_analysis.tex__ does not exist yet, but will contain the description of analysis.
+
+__NG_conclusion.tex__ does not exist yet, but will contain my conclusion.
+
 __NG_bib.bib__ contains bibliographical information of each of my cited sources.
 
 __tables__ directory contains .tex files of included tables.
@@ -32,4 +38,4 @@ Additional changes that do _not_ involve citations only need a single "latex NG_
 The command "dvipdf NG_Thesis.dvi" can convert the dvi into a pdf.
 
 
-To do this on a windows machine requires Miktex or something. I'm not really sure.
+To do this on a windows machine I have been using TeXstudio software.
