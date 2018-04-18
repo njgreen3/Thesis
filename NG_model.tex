@@ -1,6 +1,15 @@
 \chapter{Model Validation and Simulation}
 \label{ch:model}
 
-The model attempts to recreate a microgrid which uses some form of DER as a primary power source along side energy storage in order power the load. \autoref{fig:abridged_flow_diagram} shows a simplified flow diagram of the model using an ORC for the DER. The components include a ORC as a source, a load, a form of energy storage, and an inverter to link the energy storage with other pieces. The ORC block is made up of heat exchangers, an isentropic pump, an isentropic exapnder, and an induction generator. The load block \verb|one line description of load|. The energy storage block \verb|one line description of energy storage|. The inverter block \verb|one line description of inverter|.
+The model attempts to recreate a microgrid which uses some form of DER as a primary power source along side energy storage in order power the load. \autoref{fig:abridged_flow_diagram} shows a simplified flow diagram of the model using an ORC for the DER. The components include a ORC as a source, a load, a form of energy storage, and an inverter to link the energy storage with other pieces. The ORC block is made up of heat exchangers, an isentropic pump, an isentropic expander, and an induction generator. The load block \verb|one line description of load|. The energy storage block \verb|one line description of energy storage|. The inverter block \verb|one line description of inverter|.
 
 \input{figures/abridged_flow_diagram}
+
+\section{Organic Rankine Cycle Generator}
+
+\subsection{Evaporator and Condenser}
+The evaporator and the condenser are both represented using a heat exchanger script.  The function takes as inputs parameters about the high and low temperature fluids, specifically the inlet temperatures ($\si{\kelvin}$), mass flow rates ($\si{\kilogram\per\second} $), inlet pressures ($\si{\pascal}$), and fluid names, as well as parameters about the exchanger itself such as the overall heat transfer coefficient ($\si{\watt\per\kelvin\per\meter\squared}$), the heat transfer area ($\si{\meter\squared}$), and the heat exchanger type (e.g. counter or parallel flow). The function output is made up of the heat flow rate ($\si{\watt}$), and the temperatures at the outlets ($\si{\kelvin}$).
+
+
+
+\subsubsection{Expander and Pump}
