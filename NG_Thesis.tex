@@ -20,9 +20,9 @@
 \usepackage{multirow}
 
 \usepackage{amsmath, amssymb, amsfonts} % Thanks, AMS!
-\usepackage{fixltx2e} % Allows \(\) in captions, amongst other things.
+%\usepackage{fixltx2e} % Allows \(\) in captions, amongst other things.
 %\usepackage{ppl} % The Paladino font (tough to find?)
-\usepackage{pxfonts} % Paladino-like fonts
+%\usepackage{pxfonts} % Paladino-like fonts
 \usepackage{graphicx, float} % Graphics stuff
 \usepackage[space]{grffile}
 \usepackage{verbatim} % Mostly for the comment environment.
@@ -34,22 +34,25 @@
 \usepackage{cancel}
 %\usepackage{caption}
 \usepackage{cleveref}
-%\usepackage{colortbl}
+\usepackage{colortbl}
 \usepackage{csquotes}
 \usepackage{helvet}
 \usepackage{mathpazo}
 \usepackage{listings}
 \usepackage{pgfplots}
 \usepackage{xcolor}
-\usepackage{translator}
-\usepackage{beamer}
+%\usepackage{translator}
+%\usepackage{beamer}
 
 %For using units in equation mode 
 \usepackage{siunitx}
 
 %Allows for drawing circuit diagrams
-\usepackage[siunitx]{circuitikz}
-%\usepackage{circuitikz}
+%\usepackage[siunitx]{circuitikz}
+\usepackage{circuitikz}
+
+%Not sure exactly why this line is needed but I got a warning that said: running in backwards compatibility mode (unsuitable tick labels; missing features). Consider writing \pgfplotsset{compat=1.16} into your preamble.
+\pgfplotsset{compat=1.16}
 
 %certain default hyphenations aren't what I want
 \hyphenation{geo-ther-m-al}
