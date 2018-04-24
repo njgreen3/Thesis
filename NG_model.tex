@@ -10,7 +10,13 @@ The model attempts to recreate a microgrid which uses some form of DER as a prim
 \subsection{Evaporator and Condenser}
 The evaporator and the condenser are both represented using a heat exchanger script.  The function takes as inputs parameters about the high and low temperature fluids, specifically the inlet temperatures ($\si{\kelvin}$), mass flow rates ($\si{\kilogram\per\second} $), inlet pressures ($\si{\pascal}$), and fluid names, as well as parameters about the exchanger itself such as the overall heat transfer coefficient ($\si{\watt\per\kelvin\per\meter\squared}$), the heat transfer area ($\si{\meter\squared}$), and the heat exchanger type (e.g. counter or parallel flow). The function output is made up of the heat flow rate ($\si{\watt}$), and the temperatures at the outlets ($\si{\kelvin}$).
 
-While neither fluid is undergoing phase change, the Number of Transfer Units (NTU) method is used. Described in The Fundamentals of Heat and Mass Transfer, \cite{Incropera} this process calculates the output heat flow relative to a theoretical maximum heat flow. This theoretical heat flow would be realized using an infinitely long counter flow geometry
+In order to calculate the desired values, the Number of Transfer Units (NTU) method is used. Described in The Fundamentals of Heat and Mass Transfer, \cite{Incropera} this process calculates the output heat flow, $Q$, relative to a theoretical maximum heat flow, $Q_{max}$. This potential heat flow would be realized using an infinitely long counter flow geometry and is calculated as 
+\begin{equation}
+Q_{max} = C_{min}\left(T_{h,i} - T_{c,i}\right)
+\end{equation}
+where $C_{min}$ is the smaller heat capacity rate of the hot and cool fluids and $T_{h,i}$ and $T_{c,i}$ are the inlet temperatures of hot and cool fluids respectively. The two heat flows are related by the effectiveness, $\epsilon$, which is defined as the ratio of the actual heat flow to the maximum.
+
+
 Within this script there are certain assumptions made in order to calculate the output values. Ambient temperature and associated heat flow to the external environment is not accounted for.
 
 \subsubsection{Expander and Pump}
