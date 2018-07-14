@@ -10,8 +10,9 @@ The inverter block \verb|one line description of inverter|.
 
 \section{Organic Rankine Cycle Generator}
 The ORC generator block links the thermal, mechanical, and electric components of them model. The thermal properties of the fluids were obtained from a Matlab wrapper of the CoolProp library. \cite{Bell2014}
+
 \subsection{Evaporator and Condenser}
-The evaporator and the condenser are both represented using a heat exchanger script.  The function takes as inputs parameters about the high and low temperature fluids, specifically the inlet temperatures ($\si{\kelvin}$), mass flow rates ($\si{\kilogram\per\second} $), inlet pressures ($\si{\pascal}$), and fluid names, as well as parameters about the exchanger itself such as the overall heat transfer coefficient ($\si{\watt\per\kelvin\per\meter\squared}$), the heat transfer area ($\si{\meter\squared}$), and the heat exchanger type (e.g. counter or parallel flow). The function output is made up of the heat flow rate ($\si{\watt}$), and the temperatures at the outlets ($\si{\kelvin}$). Within this script there are certain assumptions made in order to calculate the output values. Ambient temperature and associated heat flow to the external environment is not accounted for in the script. Additionally, it is assumed the pressure drop from inlet to outlet is negligible for both the high and low temperature fluids.
+The evaporator and the condenser are both represented using a heat exchanger script.  The function takes as inputs parameters about the high and low temperature fluids, specifically the inlet temperatures ($\si{\kelvin}$), mass flow rates ($\si{\kilogram\per\second} $), inlet pressures ($\si{\pascal}$), and fluid names, as well as parameters about the exchanger itself such as the overall heat transfer coefficient ($\si{\watt\per\kelvin\per\meter\squared}$), the heat transfer area ($\si{\meter\squared}$), and the heat exchanger type (e.g. counter or parallel flow). The function output is made up of the heat flow rate ($\si{\watt}$), and the temperatures at the outlets ($\si{\kelvin}$). 
 
 In order to calculate the desired values, the Number of Transfer Units (NTU) method is used. Described in The Fundamentals of Heat and Mass Transfer, \cite{Incropera} this process calculates the output heat flow, $\dot{Q}$, relative to a theoretical maximum heat flow, $\dot{Q}_{max}$. This potential heat flow would be realized using an infinitely long counter flow geometry and is calculated as
 \begin{equation}
@@ -23,7 +24,7 @@ where $C_{min}$ is the smaller heat capacity rate of the hot and cool fluids and
 \epsilon \equiv \frac{\dot{Q}}{\dot{Q}_{max}}
 \end{equation}
 
-The value of $\epsilon$ is a function of the ratio of the fluids' heat capacities, $C_r = \frac{C_{min}}{C_{max}}$, as well as the exchanger's Number of Transfer Units, $NTU = \frac{U \cdot A}{C_{min}}$, where $U$ is the overall heat transfer coefficient and $A$ is the total heat transfer area. Additionally, the direction of fluid flow changes the method of calculation. In parallel flow heat exchangers, the effectiveness is calculated as
+Numerically, the value of $\epsilon$ is a function of the ratio of the fluids' heat capacities, $C_r = \frac{C_{min}}{C_{max}}$, as well as the exchanger's Number of Transfer Units, $NTU = \frac{U \cdot A}{C_{min}}$, where $U$ is the overall heat transfer coefficient and $A$ is the total heat transfer area. Additionally, the direction of fluid flow changes the method of calculation. In parallel flow heat exchangers, the effectiveness is calculated as
 \begin{equation}
 \epsilon = \frac{1 - \exp\left[-NTU\left(1 + C_r\right)\right]}{1 + C_r}
 \end{equation}
@@ -36,9 +37,15 @@ Once the effectiveness and maximum heat transfer rate are determined, equation \
 If the change in temperature for either fluid would result in vaporization or condensation, then the values must be recalculated because the specific heat is effectively infinite while the fluid is changing states. 
 
 First, the heat flow rate necessary to have the fluid begin changing its state is determined and the fraction of this value relative to initial heat flow rate is calculated. 
-The heat transfer area is reduced by this fraction and the function is re-run inputing the state of the two fluids as the one fluid begins to change phase. If enough heat flows between the two fluids such that the one completes the phase change, then the function is run a third time with the heat transfer area modified again. The function will not return accurate values if both fluids undergo a phase change because the ratio of heat capacities, $C_r$, will be undefined.
+The heat transfer area is reduced by this fraction and the function is re-run inputing the state of the two fluids as the one fluid begins to change phase. If enough heat flows between the two fluids such that the one completes the phase change, then the function is run a third time with the heat transfer area modified again. 
+
+Within this script there are certain assumptions made in order to calculate the output values. The function will not return accurate results if both fluids simultaneously undergo a phase change because the ratio of heat capacities, $C_r$, will be undefined. Additionally, Ambient temperature and associated heat flow to the external environment is not accounted for in the script. Finally, it is assumed the pressure drop from inlet to outlet is negligible for both the high and low temperature fluids. 
 
 \subsubsection{Expander and Pump}
+The expander/turbine and pump components are both modeled by a fluid undergoing non-ideal isentropic expansion or compression. For an ideal isentropic process, the fluid will experience some thermodynamic changes while its internal entropy remains constant. 
+
+The function takes as inputs certain properties of the fluid, such as the inlet temperature or enthalpy ($\si{\kelvin}$ or $\si{\joule\per\kilogram}$), both the inlet and outlet pressures ($\si{\pascal}$), and the mass flow rate ($\si{\kilogram\per\second}$). Also needed is the isentropic efficiency, a unitless parameter of the machine which describes lost power due to deviations from the ideal insentropic process. The function returns the power produced or consumed\footnote{Power is produced if the pressure at the inlet is greater than at the outlet, and consumed if inlet pressure is less than that of the outlet.} ($\si{\watt}$) and the temperature or enthalpy ($\si{\kelvin}$ or $\si{\joule\per\kilogram}$) of the fluid at the outlet.
+
 
 \subsection{Induction Generator}
 
