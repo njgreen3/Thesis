@@ -12,13 +12,15 @@ The inverter block \verb|one line description of inverter|.
 The ORC generator block links the thermal, mechanical, and electric components of them model. The thermal properties of the fluids were obtained from a Matlab wrapper of the CoolProp library. \cite{Bell2014}
 
 \subsection{Evaporator and Condenser}
-The evaporator and the condenser are both represented using a heat exchanger script.  The function takes as inputs parameters about the high and low temperature fluids, specifically the inlet temperatures ($\si{\kelvin}$), mass flow rates ($\si{\kilogram\per\second} $), inlet pressures ($\si{\pascal}$), and fluid names, as well as parameters about the exchanger itself such as the overall heat transfer coefficient ($\si{\watt\per\kelvin\per\meter\squared}$), the heat transfer area ($\si{\meter\squared}$), and the heat exchanger type (e.g. counter or parallel flow). The function output is made up of the heat flow rate ($\si{\watt}$), and the temperatures at the outlets ($\si{\kelvin}$). 
+The evaporator and the condenser are both represented using a heat exchanger script.  The function takes as inputs parameters about the high and low temperature fluids, specifically the inlet temperatures or enthalpies ($\si{\kelvin}$ or $\si{\joule\per\kilogram}$), mass flow rates ($\si{\kilogram\per\second} $), inlet pressures ($\si{\pascal}$), and fluid names, as well as parameters about the exchanger itself such as the overall heat transfer coefficient ($\si{\watt\per\kelvin\per\meter\squared}$), the heat transfer area ($\si{\meter\squared}$), and the heat exchanger type (e.g. counter or parallel flow). The function output is made up of the heat flow rate ($\si{\watt}$), and the temperatures or enthalpies at the outlets ($\si{\kelvin}$ or $\si{\joule\per\kilogram}$). 
 
 In order to calculate the desired values, the Number of Transfer Units (NTU) method is used. Described in The Fundamentals of Heat and Mass Transfer, \cite{Incropera} this process calculates the output heat flow, $\dot{Q}$, relative to a theoretical maximum heat flow, $\dot{Q}_{max}$. This potential heat flow would be realized using an infinitely long counter flow geometry and is calculated as
 \begin{equation}
 \dot{Q}_{max} = C_{min}\left(T_{h,i} - T_{c,i}\right)
 \end{equation}
-where $C_{min}$ is the smaller heat capacity rate of the hot and cool fluids and $T_{h,i}$ and $T_{c,i}$ are the inlet temperatures of hot and cool fluids respectively. The two heat flows are related by the effectiveness, $\epsilon$, which is defined as 
+where $C_{min}$ is the smaller heat capacity rate of the hot and cool fluids and $T_{h,i}$ and $T_{c,i}$ are the inlet temperatures of hot and cool fluids respectively. The heat capacity rate is the product of mass flow rate, $ \dot{m} $, and the mass specific heat at constant pressure, $ c_p $. 
+
+The heat flow rates of the hot and cool fluids are related by the effectiveness, $\epsilon$, which is defined as 
 \begin{equation}
 \label{eq:effectiveness_def}
 \epsilon \equiv \frac{\dot{Q}}{\dot{Q}_{max}}
@@ -46,8 +48,19 @@ The expander/turbine and pump components are both modeled by a fluid undergoing 
 
 The function takes as inputs certain properties of the fluid, such as the inlet temperature or enthalpy ($\si{\kelvin}$ or $\si{\joule\per\kilogram}$), both the inlet and outlet pressures ($\si{\pascal}$), and the mass flow rate ($\si{\kilogram\per\second}$). Also needed is the isentropic efficiency, a unitless parameter of the machine which describes lost power due to deviations from the ideal insentropic process. The function returns the power produced or consumed\footnote{Power is produced if the pressure at the inlet is greater than at the outlet, and consumed if inlet pressure is less than that of the outlet.} ($\si{\watt}$) and the temperature or enthalpy ($\si{\kelvin}$ or $\si{\joule\per\kilogram}$) of the fluid at the outlet.
 
+Using the inputs and the Cool Prop library, the Mass Specific Entropy, $S$, of the fluid is determined for the fluid at the inlet. In an ideal process, this value would remain constant, so it is used to determine the ideal enthalpy of the outlet. Next the ideal power transferred is calculated as 
+\begin{equation}
+\label{eq:power_enthalpy}
+P = \dot{m} \left(H_i - H_o\right)
+\end{equation}
+where $H_i$ and $H_o$ are the inlet and outlet enthalpies respectively.
+
+To obtain the actual transfered power, the isentropic efficiency is applied to the ideal power such that the ideal is necessarily greater than the actual. When the value of $H_i$ is larger than $H_o$, $P$ is positive\footnote{Power is produced.} therefore efficiency is multiplied. When $H_i$ is less than $H_o$, $P$ is negative\footnote{Power is consumed.} and ideal power is divided by efficiency. After actual transferred power is calculated, equation \ref{eq:power_enthalpy} is used to find $H_o$ and the fluid temperature at the outlet.
 
 \subsection{Induction Generator}
+The generator block models a Squirrel Cage Induction Generator (SCIG) in order to convert the mechanical power to an electrical form. Depending on the microgrid design, this could also be achieved by modeling other types of generators such as a DC generator, synchronous generator, or an alternate form of induction generator. 
+
+This function block takes several electrical and mechanical parameters as inputs such as the line to line voltage ($\si{\volt}$) and electrical frequency ($\si{\hertz}$) at the leads, the mechanical speed at the shaft ($\si{\rpm}$). Also input are the resistive and inductive impedances ($\si{\ohm}$) of the stator, rotor, and core, as well as the capacitive impedance and equivalent series resistance of external excitation capacitor.
 
 \section{Load}
 
