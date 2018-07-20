@@ -84,17 +84,17 @@ A microgrid control system ties all the other components together. Control syste
 
 Grid forming units set the frequency and voltage levels of the microgrid. Grid following units control the power\footnote{Both active power and reactive power.} supplied to the grid based on external reference values from the loads. As loads demand more power, a grid following unit will supply more power within is capabilities. Grid supporting units provide power based on voltage and frequency regulation. They assist the grid forming unit with maintaining the voltage and frequency while also supplying power. Grid parallel units also supply power to the grid, but it is based on reference values of a source. These units typically incorporate a Maximum Power Point Tracking (MPPT) algorithm in order to produce as much power as is available. They are used with intermittent sources such as wind turbines and solar PV arrays. 
 
-Control over DER and conversion units can also be categorized by whether or not communication is used. Typically communication among units can yield more precise power sharing and set points but the necessary communication lines can introduce additional costs and points of failure \cite{Vandoorn2013}. Furthermore, control strategies that do not require communication are easier to expanded and provide redundancy because coordination among controller units is less complex. Methods of communication based control includes centralized control, distributed control, Master/Slave control, etc. Methods of non-communication based control includes droop control as well as frequency based signal injection.
+Control over DER and conversion units can also be categorized by whether or not communication is used. Typically communication among units can yield more precise power sharing and set points but the necessary communication lines can introduce additional costs and points of failure \cite{Vandoorn2013}. Furthermore, control strategies that do not require communication are easier to expanded and provide redundancy because coordination among controller units is less complex. Methods of communication based control includes centralized control, distributed control, Master\slash Slave control, etc. Methods of non-communication based control includes droop control as well as frequency based signal injection.
 
 \subsubsection{Communication Based Control}
 Centralized control schemes make use of two way communication where a central controller sets the priorities of local DER and load controllers during regular intervals. The priorities are determined from a predefined optimization algorithm and uses inputs of the supply and demand from the local controllers, as well as market costs during the previous interval \cite{Katiraei2008}. Distributed control schemes also use a centralized control unit to regulate the set points of the local control units, but simpler communications are used. The central control unit responds more slowly to disturbances than the local controllers, but helps ensure they share power evenly in steady state conditions \cite{Prodanovic2006}. 
 
-In a master/slave relationship between different DER units, the master will operate in voltage control mode and the slave units in current control mode. Such a system may or may not include a central controller. Without a central controller, the master sets the current reference for the remaining units \cite{Siri1992}. If there is a central controller then it is the controller, not the master that sets the current references \cite{Chen1995}.
+In a master\slash slave relationship between different DER units, the master will operate in voltage control mode and the slave units in current control mode. Such a system may or may not include a central controller. Without a central controller, the master sets the current reference for the remaining units \cite{Siri1992}. If there is a central controller then it is the controller, not the master that sets the current references \cite{Chen1995}.
 
 \subsubsection{Non-Communication Based Control}
 The droop control method originated with the relationship between frequency and active power for synchronous machines due to rotating inertia. As a load increases the machine will slow and its frequency will droop. It has since been adapted into power conversion control schemes as well despite the lack of physical inertia. It is mathematically derived from the equation describing active power flow through an impedance $ R + jX $ from point 1 to point 2.
 \begin{equation}
-P = \frac{V_{1}}{R^2 + X^2} \left( R \left( V_{1}-V_{2}\cos{\delta_{12}} \right) +X V_{2} \sin{\delta_{12}} \right)
+P = \frac{V_{1}}{R^2 + X^2} \big( R \left( V_{1}-V_{2}\cos{\delta_{12}} \right) +X V_{2} \sin{\delta_{12}} \big)
 \end{equation}
 Assuming small phase angle $\delta_{12}$ between the points as well as negligible resistance $R$, the equation can be reduced to 
 \begin{equation}
@@ -108,7 +108,7 @@ where $K_P$ is a negative proportionality constant.
 
 Similarly a droop relationship between reactive power flow and relative voltage levels can be shown:
 \begin{equation}
-Q = \frac{V_1}{R^2 + X^2} \left( -R V_2 \sin{\delta_{12}} + X \left(V_1 - V_2 \cos{\delta_{12}}\right) \right)
+Q = \frac{V_1}{R^2 + X^2} \big( -R V_2 \sin{\delta_{12}} + X \left(V_1 - V_2 \cos{\delta_{12}}\right) \big)
 \end{equation}
 \begin{equation}
 Q = \frac{V_1}{X} \left( V_1 - V_2 \right)
@@ -118,7 +118,7 @@ V = V_{\text{ref}} + K_Q \left( Q - Q_{\text{ref}} \right)
 \end{equation}
 where $K_Q$ is a negative proportionality constant. 
 
-It should be noted, however, the droop equations are only valid under certain conditions. If the angle/frequency deviations are too great then the small angle approximations will break down. Additionally, the relative magnitude of the resistive and reactive impedance components effect system dynamics. If the frequency changes are too great then $X$ can no longer be considered constant. This means the $P$/$f$ and $V$/$Q$ relationships cannot be approximated as linear. Additionally, the line resistance in most low voltage systems is not so small as to be negligible. In fact in situations where the line reactance is negligible compared to the resistance, then linear approximations can be made between active power and voltage as well as reactive power and frequency \cite{YunWeiLi2009}.
+It should be noted, however, the droop equations are only valid under certain conditions. If the angle/frequency deviations are too great then the small angle approximations will break down. Additionally, the relative magnitude of the resistive and reactive impedance components effect system dynamics. If the frequency changes are too great then $X$ can no longer be considered constant. This means the $P$\slash $f$ and $V$\slash $Q$ relationships cannot be approximated as linear. Additionally, the line resistance in most low voltage systems is not so small as to be negligible. In fact in situations where the line reactance is negligible compared to the resistance, then linear approximations can be made between active power and voltage as well as reactive power and frequency \cite{YunWeiLi2009}.
 
 
 %distributed control vs centralized
@@ -126,7 +126,7 @@ It should be noted, however, the droop equations are only valid under certain co
 %Katiraei et al & Vandoorn et al
 
 \section{AC vs DC Microgrids}
-AC microgrids and DC microgrids are both technically feasible, but the selection of which is optimal heavily depends on the types of loads and power sources used. Furthermore, the choice is not necessarily a binary decision. AC/DC hybrid systems can provide benefits of each, but at greater cost. This section will compare and contrast the different architectures.
+AC microgrids and DC microgrids are both technically feasible, but the selection of which is optimal heavily depends on the types of loads and power sources used. Furthermore, the choice is not necessarily a binary decision. AC\slash DC hybrid systems can provide benefits of each, but at greater cost. This section will compare and contrast the different architectures.
 
 \subsection{Efficiency}
 In each conversion step there is some power loss due to inefficiencies. Sequential conversions can add up to a significant losses. Distributing AC and DC power to their respective loads separately can eliminate many conversion steps but it is unrealistic to completely remove all steps. \autoref{tab:conv_eff} shows that, at rated values, typical losses among different power converters are not symmetric. Transformers are the most efficient, followed by inverters and DC-DC converters. Rectifiers are experience the most loss. When operated below rated values all conversion devices experience drops in efficiency

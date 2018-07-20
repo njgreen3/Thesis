@@ -60,8 +60,34 @@ To obtain the actual transfered power, the isentropic efficiency is applied to t
 \subsection{Induction Generator}
 The generator block models a Squirrel Cage Induction Generator (SCIG) in order to convert the mechanical power to an electrical form. Depending on the microgrid design, this could also be achieved by modeling other types of generators such as a DC generator, synchronous generator, or an alternate form of induction generator. 
 
-This function block takes several electrical and mechanical parameters as inputs such as the line to line voltage ($\si{\volt}$) and electrical frequency ($\si{\hertz}$) at the leads, the mechanical speed at the shaft ($\si{\rpm}$). Also input are the resistive and inductive impedances ($\si{\ohm}$) of the stator, rotor, and core, as well as the capacitive impedance and equivalent series resistance of external excitation capacitor.
+This function block takes several electrical and mechanical parameters as inputs such as the line to line voltage ($\si{\volt}$) and electrical frequency ($\si{\hertz}$) at the leads, the mechanical speed at the shaft ($\si{\rpm}$), and the number pole pairs in machine's windings. Also input are the resistive and inductive impedances ($\si{\ohm}$) of the stator, rotor, and core, as well as the capacitive impedance and equivalent series resistance of external excitation capacitor. The function returns the active ($\si{\watt}$) and reactive ($\si{\voltampreactive}$) power outputs and losses.
 
+\input{figures/SCIG_circuit_diagram}
+A single phase circuit diagram of the generator which includes these components can be seen in \autoref{fig:SCIG__circuit_diagram}. $R_s$ and $X_s$ represent the resistive and inductive impedances of the stator. $R_r$ and $X_r$ represent the resistive and inductive impedances of the rotor as referred to the stator. $R_c$ and $X_m$ represent the resistive and inductive impedances due to the magnetization of the core. $R_{esr}$ and $X_x$ represent the equivalent series resistance and capacitive impedances of the external excitation capacitor.
+
+To calculate these outputs, first the magnitude of the phase voltage is calculated from the line to line voltage, $V_{ll}$, as $ \left|V_{ph}\right| = \frac{\left|V_{ll}\right|}{\sqrt{3}} $ assuming $ \angle V_{ph} = 0 $. Next the synchronous mechanical speed is determined by $ n_{synch} = \frac{120f}{2\text{poles}} $ and is used, along with the mechanical speed, $n_{mech}$ to calculate the slip of the machine as $ s = \frac{n_{synch} - n_{mech}}{n_{synch}} $.
+
+With the slip, the total impedances of the rotor, stator, core, the Th\'evenin combination of those three, the external excitation branch, and the Th\'evenin combination of everything can be calculated.
+\begin{equation*}
+Z_s = R_s + jX_s
+\end{equation*}
+\begin{equation*}
+Z_r = R_r\frac{1-s}{s} + R_r + jX_r
+\end{equation*}
+\begin{equation*}
+Z_{core} = R_c \parallel jX_m
+\end{equation*}
+\begin{equation*}
+Z_{machine} = R_s + \left(Z_{core} \parallel Z_r\right)
+\end{equation*}
+\begin{equation*}
+Z_{excite} = R_{esr} - jX_x
+\end{equation*}
+\begin{equation*}
+Z_{total} = Z_{excite} \parallel Z_{machine}
+\end{equation*}
+
+Once all the relevant impedances are determined, the currents flowing through the branches are calculated along with the internal voltage at the stator-rotor-core junction.
 \section{Load}
 
 \section{Inverter and Storage}
