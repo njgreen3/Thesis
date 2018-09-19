@@ -1,15 +1,16 @@
 \chapter{Model Validation and Simulation}
 \label{ch:model}
 
-The model attempts to recreate a microgrid which uses some form of DER as a primary power source along side energy storage in order power the load. \autoref{fig:abridged_flow_diagram} shows a simplified flow diagram of the model using an ORC for the DER. The components include a ORC as a source, a load, a form of energy storage, and an inverter to link the energy storage with other pieces. In the figure, the blue blocks and lines represent electrical components, while green represents the flow of data. The ORC block is made up of heat exchangers, an isentropic pump, an isentropic expander, and an induction generator. 
+The model attempts to recreate a microgrid which uses some form of DER as a primary power source along side energy storage in order power the load. \autoref{fig:abridged_flow_diagram} shows a simplified flow diagram of the model using an ORC for the DER. The components include a ORC as a source, a load, and an inverter to link the source with other pieces. In the figure, the blue blocks and lines represent electrical components, while green represents the flow of data. The ORC block is made up of heat exchangers, an isentropic pump, an isentropic expander, and an induction generator. 
+\begin{comment}
 The load block \verb|one line description of load|. 
 The energy storage block \verb|one line description of energy storage|. 
 The inverter block \verb|one line description of inverter|.
-
+\end{comment}
 \input{figures/abridged_flow_diagram}
 
 \section{Organic Rankine Cycle Generator}
-The ORC generator block links the thermal, mechanical, and electric components of them model. The thermal properties of the fluids were obtained from a Matlab wrapper of the CoolProp library. \cite{Bell2014}
+The ORC generator block links the thermal, mechanical, and electric components of them model. The thermal properties of the fluids were obtained from a Matlab wrapper of the CoolProp library. \cite{Bell2014} Thermal conditions of source, sink, and working fluids are fed into the Rankine Cycle portion of the model, which returns a mechanical power. Electrical conditions, along with the mechanical power, are fed into the generator portion of the model, which returns an electrical output.  
 
 \subsection{Evaporator and Condenser}
 The evaporator and the condenser are both represented using a heat exchanger script.  The function takes as inputs parameters about the high and low temperature fluids, specifically the inlet temperatures or enthalpies ($\si{\kelvin}$ or $\si{\joule\per\kilogram}$), mass flow rates ($\si{\kilogram\per\second} $), inlet pressures ($\si{\pascal}$), and fluid names, as well as parameters about the exchanger itself such as the overall heat transfer coefficient ($\si{\watt\per\kelvin\per\meter\squared}$), the heat transfer area ($\si{\meter\squared}$), and the heat exchanger type (e.g. counter or parallel flow). The function output is made up of the heat flow rate ($\si{\watt}$), and the temperatures or enthalpies at the outlets ($\si{\kelvin}$ or $\si{\joule\per\kilogram}$). 
@@ -61,7 +62,7 @@ To obtain the actual transfered power, the isentropic efficiency is applied to t
 The generator block models a Squirrel Cage Induction Generator (SCIG) in order to convert the mechanical power to an electrical form. Two different function blocks were created for two scenarios: regulated and unregulated. The former is simpler to model, but the generator requires another firm source\footnote{Or an electrical storage-inverter combination.} to maintain its frequency and voltage. For the latter scenario, the generator's frequency and voltage are allowed to vary. Its leads are connected directly to a power converter which maintains the frequency and voltage of the remaining microgrid. 
 
 \subsubsection{Regulated SCIG}
-This function block takes several electrical and mechanical parameters as inputs such as the line to line voltage ($\si{\volt}$) and electrical frequency ($\si{\hertz}$) at the leads, the mechanical speed at the shaft ($\si{\rpm}$), and the number pole pairs in machine's windings. Also input are the resistive and inductive impedances ($\si{\ohm}$) of the stator, rotor, and core, as well as the capacitive impedance and equivalent series resistance of external excitation capacitor. The function returns the active ($\si{\watt}$) and reactive ($\si{\voltampreactive}$) power outputs and losses.
+This function block takes several electrical and mechanical parameters as inputs such as the line to line voltage ($\si{\volt}$) and electrical frequency ($\si{\hertz}$) at the leads, the mechanical speed at the shaft ($\si{\rpm}$), the number pole pairs in machine's windings, and coefficients of friction due to bearings ($\si{\watt\per\second}$) and windage ($\si{\watt\per\second\squared}$). Also input are the resistive and inductive impedances ($\si{\ohm}$) of the stator, rotor, and core, as well as the capacitive impedance and equivalent series resistance of external excitation capacitor. The function returns the active ($\si{\watt}$) and reactive ($\si{\voltampreactive}$) power outputs and losses.
 
 \input{figures/SCIG_circuit_diagram}
 A single phase circuit diagram of the generator which includes these components can be seen in \autoref{fig:SCIG__circuit_diagram}. $R_s$ and $X_s$ represent the resistive and inductive impedances of the stator. $R_r$ and $X_r$ represent the resistive and inductive impedances of the rotor as referred to the stator. $R_c$ and $X_m$ represent the resistive and inductive impedances due to the magnetization of the core. $R_{esr}$ and $X_x$ represent the equivalent series resistance and capacitive impedances of the external excitation capacitor.
@@ -88,7 +89,22 @@ Z_{excite} = R_{esr} - jX_x
 Z_{total} = Z_{excite} \parallel Z_{machine}
 \end{equation*}
 
-Once all the relevant impedances are determined, the currents flowing through the branches are calculated along with the internal voltage at the stator-rotor-core junction.
-\section{Load}
+Once all the relevant impedances are determined, the currents flowing through the branches are calculated along with the internal voltage at the stator-rotor-core junction. These values are used to determine internal power losses. The mechanical losses due to the bearings and windage are calculated by multiplying the appropriate coefficient of friction by the mechanical angular frequency  and the square of the mechanical angular frequency respectively. 
 
-\section{Inverter and Storage}
+\subsubsection{Unregulated SCIG}
+To simulate microgrids with no forms of storage or sources beyond the ORC, an unregulated SCIG model was developed. The single phase diagram is similar to the regulated SCIG seen in \autoref{fig:SCIG__circuit_diagram}, except the voltage source $V_{ph}$ at the lead is replaced with a resistive load. The model is based off the analysis by Ouazenne et al. of a self excited induction generator in \cite{Ouazenne1983} using admittance balancing. It is assumed the active power losses across the core and the excitation capacitance are negligible. Additionally, it is assumed the load is purely active, as any reactive load can be supplied by the conversion device which regulates the voltage and frequency of the microgrid.
+
+The method of admittance balancing relies on the fact active and reactive power entering and exiting an electrical node must sum to zero. For this analysis, the chosen node at which the rotor, the core, and the combination of the stator, excitation capacitor, and load meet. Since the voltage across each branch is the same and power flow sums to zero, then the admittances must sum to zero as well. By breaking the complex admittances into real and imaginary components, a system of equations can be developed to solve for frequency and core reactance. A more detailed description of this process can be seen in Appendix \autoref{ap:SEIG}. These values can then be used to determine total power output and losses. 
+
+The function takes as variable inputs the mechanical speed of the shaft ($\si{\rpm}$), the power load of the microgrid ($\si{\watt}$), and the line to line voltage at the lead ($\si{\volt}$). Also input as parameters are the rated frequency of machine ($\si{\hertz}$), the number of poles it contains, the resistances and inductances of the rotor and stator ($\si{\ohm}, \si{\henry}$), the capacitance of external excitation capacitors ($\si{\farad}$), coefficients of friction due to bearings ($\si{\watt\per\second}$) and windage ($\si{\watt\per\second\squared}$), and the magnetization curve comparing the core reactance ($\si{\ohm}$) to the internal voltage across the core ($\si{\volt}$). The output variables of the function include active power generated ($\si{\watt}$) and internally consumed ($\si{\watt}$), the reactive power consumed ($\si{\voltampreactive}$), the necessary mechanical power driving the shaft ($\si{\watt}$), the line to line voltage ($\si{\volt}$), and the electrical frequency ($\si{\hertz}$).
+
+First the inductive and capacitive reactances of the rotor, stator, and external excitation capacitors are calculated at the rated frequency of the machine, along with the equivalent load resistance for the given input voltage. Next, the electrical frequency is calculated based off the real portion of the admittance balance equations. With the frequency the machine slip can be determined as well. Next, the imaginary portion of the admittance balance equation can be used to solve for the core reactance. Internal voltage of the machine is then interpolated from the core reactance based off of the magnetization curves. The new phase and line voltages are determined as well to feed back into the next iteration of the function.
+
+With all components of the machine now know, the power output and losses can be calculated in the same manner as the regulated induction generator seen above. 
+
+\section{Inverter}
+The inverter block converts the unregulated power output from the generator into a form with a stable frequency and voltage. In this model, a simplified view is taken of its operation. The inputs include the inverter's efficiency, $\eta$, and the unregulated power off of the induction generator ($\si{\watt}$). The outputs include the delivered power to the load calculated as $P_{out} = \eta P_{in}$  and the power lost within the inverter ($\si{\watt}$) calculated as $P_{loss} = P_{in} - P_{out}$.
+
+\section{Load}
+The model is assumes the microgrid delivers power to a three phase $\si{60}{\hertz}$ AC load. The total load in the model is primarily determined by predefined set point. This value is added to the output of the pump used to circulate the working fluid. This value is used as the input load for the unregulated induction generator.
+

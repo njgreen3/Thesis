@@ -279,7 +279,7 @@ RECOMMENDED:\@comitteespace
 			\bigskip
 			APPROVED:
 		\end{center}
-%\begin{comment}
+		%\begin{comment}
 		\singlespacing
 		\begin{tabular}{p{7cm} l}  % Use this table for the names on your signature form
 			\hfill & Dr. {\@committeechair}, Committee Chair\\
@@ -292,7 +292,7 @@ RECOMMENDED:\@comitteespace
 			& Dr. {\@graddean}, Dean\\
 			& \qquad \textit{Graduate School}
 		\end{tabular}
-%\end{comment}
+		%\end{comment}
 		\doublespacing
 		\thispagestyle{empty}
 		\vfill\null
