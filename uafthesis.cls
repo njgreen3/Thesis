@@ -174,6 +174,62 @@
 \setcounter{footnote}{0}
 }\newpage}
 
+%% \maketitle makes titlepage. requires all the above macros 
+\def\maketitle{
+	{   \let\footnotesize\small
+		\let\footnoterule\relax
+		\if@arabic\relax\else\renewcommand{\thepage}{\roman{page}}\fi
+		\setcounter{page}{1} 
+		\thispagestyle{empty}
+		\addcontentsline{toc}{section}{\titlename}
+		%\null\vfill
+		\begin{center}
+			{\bfseries {\expandafter\uppercase\expandafter{\@title}}}\\
+			\bigskip 
+			\bigskip
+			By\\
+			{\@author}, {\@prevdegrees} \\ % Put your name and prior degrees here
+			\bigskip
+			\bigskip
+			A Dissertation Submitted in Partial Fulfillment of the Requirements\\
+			for the Degree of\\
+			{\expandafter\uppercase\expandafter{\@degree}}\\
+			in\\
+			{\@department}\\  % Put the name of your degree here
+			\bigskip
+			University of Alaska Fairbanks\\
+			{\@degreemonth} {\@degreeyear}\\  % Date of graduation
+			\bigskip
+			\bigskip
+			\bigskip
+			\bigskip
+			\bigskip
+			\bigskip
+			APPROVED:
+		\end{center}
+		%\begin{comment}
+		%\singlespacing
+		\begin{tabular}{p{7cm} l}  % Use this table for the names on your signature form
+			\hfill & Dr. {\@committeechair}, Committee Chair\\
+			& Dr. {\@committeememberfirst}, Committee Member\\
+			& Dr. {\@committeemembersecond}, Committee Member\\
+			& Dr. {\@departmentchair}, Chair\\                           % Name of Department Chair
+			& \qquad \textit{\@department}\\    % Your Department
+			& Dr. {\@collegedean}, Dean\\                   % Dean of your college
+			& \qquad \textit{\@college}\\       % Name of your college
+			& Dr. {\@graddean}, Dean\\
+			& \qquad \textit{Graduate School}
+		\end{tabular}
+		%\end{comment}
+		%\doublespacing
+		\thispagestyle{empty}
+		\vfill\null
+		\setcounter{footnote}{0}
+	}\newpage
+	\thispagestyle{empty}
+	\null
+	\newpage}
+
 %% The \makesig macro emits a UAF-approved signature page ready for
 %% your committee's signature.  requires the the \title, \author, and
 %% \college macros have been defined.  (this bastard finally is
@@ -246,61 +302,7 @@ RECOMMENDED:\@comitteespace
 \end{minipage}
 \newpage
 }
-%% \maketitle makes titlepage. requires all the above macros 
-\def\maketitle{
-	{   \let\footnotesize\small
-		\let\footnoterule\relax
-		\if@arabic\relax\else\renewcommand{\thepage}{\roman{page}}\fi
-		\setcounter{page}{1} 
-		\thispagestyle{empty}
-		\addcontentsline{toc}{section}{\titlename}
-		%\null\vfill
-		\begin{center}
-			{\bfseries {\expandafter\uppercase\expandafter{\@title}}}\\
-			\bigskip 
-			\bigskip
-			By\\
-			{\@author}, {\@prevdegrees} \\ % Put your name and prior degrees here
-			\bigskip
-			\bigskip
-			A Dissertation Submitted in Partial Fulfillment of the Requirements\\
-			for the Degree of\\
-			{\expandafter\uppercase\expandafter{\@degree}}\\
-			in\\
-			{\@department}\\  % Put the name of your degree here
-			\bigskip
-			University of Alaska Fairbanks\\
-			{\@degreemonth} {\@degreeyear}\\  % Date of graduation
-			\bigskip
-			\bigskip
-			\bigskip
-			\bigskip
-			\bigskip
-			\bigskip
-			APPROVED:
-		\end{center}
-		%\begin{comment}
-		\singlespacing
-		\begin{tabular}{p{7cm} l}  % Use this table for the names on your signature form
-			\hfill & Dr. {\@committeechair}, Committee Chair\\
-			& Dr. {\@committeememberfirst}, Committee Member\\
-			& Dr. {\@committeemembersecond}, Committee Member\\
-			& Dr. {\@departmentchair}, Chair\\                           % Name of Department Chair
-			& \qquad \textit{\@department}\\    % Your Department
-			& Dr. {\@collegedean}, Dean\\                   % Dean of your college
-			& \qquad \textit{\@college}\\       % Name of your college
-			& Dr. {\@graddean}, Dean\\
-			& \qquad \textit{Graduate School}
-		\end{tabular}
-		%\end{comment}
-		\doublespacing
-		\thispagestyle{empty}
-		\vfill\null
-		\setcounter{footnote}{0}
-	}\newpage
-	\thispagestyle{empty}
-	\null
-	\newpage}
+
 
 %% the abstract goes here and gets its page set to 3, as req'd (note:
 %% abstract and acknowledgements are frontschap's --> defined later)

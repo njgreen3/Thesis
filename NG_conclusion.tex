@@ -1,0 +1,37 @@
+\chapter{Conclusion}
+\label{ch:conclusion}
+
+The goal of this thesis was to explore a viable and affordable method of incorporating renewable energy into electrical systems. Low temperature geothermal sites were looked at specifically because such sites can be found within Alaska and similar environments which are not currently fully utilized. To achieve the goal, a model was developed to simulate the thermodynamic and electrical processes. Next, two different systems were examined; a greenfield site with minimal existing infrastructure, and a brownfield site that is already electrified. 
+
+\section{Verification}
+In order to verify the model approximates reality, a Electratherm Green Machine was simulated under testing conditions. These values were compared to the results of a Green Machine test at the University of Alaska Fairbanks. There were some difficulties in re-creating exact conditions because some values were not precisely recorded. For example operating ranges for the high and low pressures of the working fluid were stated, but specific measurements were not included.
+% area/U discrpencies
+
+Under four different combinations of source and sink flow rates and temperatures, the gross output power of the model matched the measured values. However, given the assumed heat transfer area of the evaporator and condenser, the power consumed by the pump was calculated to be much greater than what was measured. Increasing the area of the evaporator such that it roughly matched the condenser greatly reduced the calculated power needed by the pump. However this is not typical for ORCs. Generally condensers are sized larger than evaporators so the system can also feasibly use air to cool the working fluid. 
+
+\section{Greenfield}
+It was shown that output of an ORC could produce a net output of around \SIrange{27.5}{30.8}{\kilo\watt} over the course of the year. This is due to a steady temperature hot water resource and a cold water sink that varies over seasons but remains liquid. According to the model, more power could be produced by increasing the flow rate. However this assumes the isentropic efficiency of the turbine expander is equal in the two cases, which is unlikely. The additional mass means the fluid does not fully vaporize, which is not typical for ORC systems because the efficiency is not constant under all conditions. Furthermore, the higher flow rate means a larger pump must be sized for the system, increasing the total cost
+
+\section{Brownfield}
+The expected net power produced by an ORC for a microgrid system is \SI{27.8}{\kilo\watt}, just under the desired \SI{30}{\kilo\watt} needed to drive the district heating pumps. However, there was sufficient power produced, but due to inefficiencies and parasitic loads there was not enough power remaining for everything. 
+
+The gross electrical power produced by the generator before inverter losses is just shy of \SI{30.8}{\kilo\watt}. This indicates there may be enough power from the local resource to operate the district heating system while the electrical grid is active and capable of regulating the frequency and voltage of the induction generator. However the whole system would still go down during a power outage and the diesel generators would still need to be used to give the community heat.
+
+One possible solution is to increase the size of the evaporator area. This could allow the more heat to flow from the water to the working fluid, meaning the more fluid could be moved while still fully vaporizing. Unfortunately, the cost of the system would go up as well due to larger heat exchanger.
+
+%check the mech power produced
+Another option could be to bypass electrical conversion entirely, eliminating several inefficiencies along the way. The simulated ORC produced about \SI{31.7}{\kilo\watt} of mechanical power, and the \SI{30}{\kilo\watt} district heating pumps actually need slightly less mechanical power to operate. A system could be developed to connect the ORC expander directly to a mechanical pump to drive the district heating loop. Other inefficiencies would likely be introduced and controlling the flow would be challenging, but it might be worth further examination.
+
+\section{Future Work}
+\subsection{Thermal Model}
+As described previously, more heat was transferred through the heat exchangers in the model than what was measured in trials. A possible explanation is that the model is perfectly efficient at transferring the heat and none is lost to the ambient environment. The overall accuracy of the model could be improved by accounting for this additional route of heat flow.
+
+Another implementation that could improve system performance is an optional pre-heater that several commercial systems already use. This heat exchanger is inserted in the loop between the pump and evaporator on the high pressure side effectively increasing the area of the evaporator. Sometimes the pre-heater uses a different heat source from the primary source. Even the heat of the working fluid coming off of the expander before flowing through the condenser could be used. This allows the system to recycle some of the heat that was not converted into mechanical energy letting it operate at a slightly higher efficiency at the cost of an additional component.
+
+\subsection{Electrical Model}
+The microgrids simulated as a part of this project only included squirrel cage induction generators because they are relatively inexpensive to build and maintain and are therefore commonly used in commercial ORC systems. They are not, however, ubiquitous. It would be beneficial for future works to include models of additional generator types such as DC or permanent magnet synchronous machines. This could allow the user to compare systems made by different manufacturers and which use alternative technologies.
+%various inverter models
+%add storage
+
+\subsection{Transient Model}
+This model was designed to examine steady-state results. It looks at the energy balance of each component to simulate how they interact over long term. This means it is unable to accurately capture transient dynamics after a change in load, temperature, or flow rate. Each of those fluctuations may operate at different time scales and effect the system differently. It is important to know the system is capable of providing primary power while maintaining grid frequency and voltage under those different perturbations.

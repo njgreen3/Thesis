@@ -4,18 +4,20 @@
 \section{Problem Statement}
 The state of Alaska currently has dozens of communities which are electrically isolated from the rest of the state. They effectively act as remote permanently islanded microgrids. These communities typically use diesel generators to provide most of their electrical power. Power sources such as coal or natural gas are less expensive in larger grids but these microgrids are too small to take advantage of such economies of scale. This makes it expensive to operate relative to the size of the communities. Furthermore, the remoteness of these communities significantly increases the cost to import fuel.
 
-The goal of this thesis is to determine an affordable method to incorporate renewable energy into microgrids without compromising stability and reliability. One method of reducing operating costs is to offset diesel fuel through the use of renewable energy resources.\footnote{Sometimes called renewables, these sources of energy either will not be depleted or can be replenished in a reasonably short period of time. They include wind, sunlight, geothermal heat, biomass, and water flow.} Unfortunately powering a microgrid with a significant portion of intermittent renewable resources can negatively impact grid stability unless appropriate infrastructure is included. 
+The goal of this thesis is to determine an affordable method to incorporate renewable energy into microgrids without compromising stability and reliability. One method of reducing operating costs is to offset diesel fuel through the use of locally available renewable energy resources.\footnote{Sometimes called renewables, these sources of energy either will not be depleted or can be replenished in a reasonably short period of time. They include wind, sunlight, geothermal heat, biomass, and water flow.} Unfortunately powering a microgrid with a significant portion of intermittent renewable resources can negatively impact grid stability unless appropriate infrastructure is included. 
 
-This thesis will seek to accomplish this by simulating the operation of a permanently islanded microgrid containing geothermal power generation under multiple scenarios and cases. 
+This thesis will seek to accomplish its goal by simulating the operation of a permanently islanded microgrid containing geothermal power generation under multiple scenarios and cases. 
 \begin{itemize}
 \item One greenfield site will be examined with no existing permanent electrical infrastructure.
 \item One brownfield site will be examined where there is an existing grid connection but experiences regular outages.
 \item In both cases the geothermal power will be converted from AC to DC then back to AC in to be distributed to the loads.  
 \end{itemize}
 
-The greenfield area selected for the microgrid, Pilgrim Hot Springs, lies about 60 miles north of Nome in western Alaska. Since the 1970s there has been interest in developing the hot springs in order to generate electricity similar to the organic Rankine cycle generator used in Chena Hot Springs. Several exploratory wells have been drilled and indicate potential for low temperature geothermal electrical generation \cite{Holdmann2013}. The area is currently undeveloped,\footnote{There are historic ruins of an old church and orphanage from the early 1900s, but those buildings are uninhabitable.} therefore this remote microgrid will be designed from scratch. The land owners, Unataaq LLC, have expressed interest in developing the resource as a tourist attraction, for agriculture, as well as for electrical production.
+The greenfield area selected for the microgrid, Pilgrim Hot Springs, lies about 60 miles north of Nome in western Alaska. Since the 1970s there has been interest in developing the hot springs in order to generate electricity similar to the organic Rankine cycle generator used in Chena Hot Springs. Several exploratory wells have been drilled and indicate potential for low temperature geothermal electrical generation \cite{Holdmann2013}. \autoref{fig:pilgrimFLIR} shows a geothermal runoff stream and how much warmer the water is compared to the banks. The area is currently undeveloped,\footnote{There are historic ruins of an old church and orphanage from the early 1900s, but those buildings are uninhabitable.} therefore this remote microgrid will be designed from scratch. The land owners, Unataaq LLC, have expressed interest in developing the resource as a tourist attraction, for agriculture, as well as for electrical production.
+\input{figures/pilgrimFLIR}
 
-The brownfield site to be examined is Bergssta$\eth$ir, Iceland, a rural area in the northern part of the island. There currently exists a district heating loop which uses a low temperature geothermal hot spring as a heat source. The pumps used to circulate the water are electrically driven, but electrical grid in rural Iceland is less reliable than the heating loop needs to be. Currently they use diesel generators to power the pumps when the electricity goes out, but they are interested in alternatives.
+Iceland has extensive experience utilizing their geothermal resources, but so far only high temperature areas are used for electricity production, while low temperature sites are used for district heating. One such system, an the brownfield case study, heats the community of Bergssta$\eth$ir, Iceland, a rural area in the northern part of the island. \autoref{fig:bergstadir_effluent} shows the discharge pipe and steaming effluent of the system. The pumps used to circulate the water are electrically driven by two \SI{15}{\kilo\watt} motors, but electrical grid in rural Iceland is less reliable than the heating loop needs to be. Currently the community uses diesel generators to power the pumps when the electricity goes out, but they are interested in alternatives.
+\input{figures/bergstadir_effluent}
 
 \section{Microgrid Description}
 Microgrids are electrical systems composed of sources and loads within a well defined electrical boundary. Many microgrids are connected to a larger grid but with the ability to become separated, or islanded, while still maintaining some or all of the loads. Others need to remain connected but still maintain a boundary. Some form of energy storage is often used for systems operating independently from the larger grid. This section will describe the key components and characteristics of a microgrid with emphasis on relevance to Alaska.
@@ -59,30 +61,10 @@ Electronic conversion devices take a form of electrical power (AC or DC) and con
 %address high frequency transformers: isolation + additional voltage step up/down
 %maybe in conversion chapter
 
-\subsubsection{DC-DC}
-%description, diagram, and waveform of simple buck and boost converters
-DC-DC power conversion devices can generally be divided up into two simple designs: buck to step voltage down and boost to step voltage up. The concepts used in these two designs can be modified or combined to create a number of  DC-DC converter topologies with slightly different characteristics. These include but are not limited to \'Cuk, SEPIC, Flyback, Forward, Half-bridge, and Full-bridge converters.
-
-In a simple Buck converter, seen in \autoref{fig:simple_buck}, timed switching sets the average output voltage to a value smaller than the input. The inductor ensures a continuous current at the output and the capacitor provides a steady voltage with only modest ripple. Example waveforms of input and output current and voltage can be seen for a simple buck converter in fig X.
-
-\input{figures/simple_buck}
-
-In a simple Boost converter, seen in \autoref{fig:simple_boost}, timed switching also sets the average output voltage to the desire level. However, the placement of the components leads to an increasing current through the inductor while the switch is closed. When the switch is open, the relatively high current flow through the diode and results in a larger average output voltage than seen at the input. As in the buck converter, the capacitor provides a steady voltage. Example waveforms of input and output current and voltage can be seen for a simple buck converter in fig X.
-
-\input{figures/simple_boost}
-
-\subsubsection{Rectifier}
-%description, diagram, and waveform of simple rectifier
-Rectifiers use a combination of diodes to convert an AC voltage to DC. \autoref{fig:simple_rectifier} shows a simple example of a single phase rectifier. The diodes allow a path such that the DC current always flows in the same direction regardless of AC polarity. Example waveforms of input and output current and voltage can be seen for a simple buck converter in fig X.
-
-\input{figures/simple_rectifier}
 
 
-\subsubsection{Inverter}
-description, diagram, and waveform of simple inverter
-
-\paragraph{}
-More advanced methods and architectures of power conversion will be addressed further in \autoref{ch:conv}.
+%\paragraph{}
+%More advanced methods and architectures of power conversion will be addressed further in \autoref{ch:conv}.
 
 \subsection{Control}
 A microgrid control system ties all the other components together. Control systems monitor and maintain the voltage and frequency of the grid while ensuring sufficient active and reactive power is supplied to the loads. The control schemes of power sources and converters can generally be divided into several categories: grid forming, grid following, grid supporting, and grid parallel \cite{Ortjohann2012, Engler, Strauss2003}. 
@@ -97,6 +79,7 @@ Centralized control schemes make use of two way communication where a central co
 In a master\slash slave relationship between different DER units, the master will operate in voltage control mode and the slave units in current control mode. Such a system may or may not include a central controller. Without a central controller, the master sets the current reference for the remaining units \cite{Siri1992}. If there is a central controller then it is the controller, not the master that sets the current references \cite{Chen1995}.
 
 \subsubsection{Non-Communication Based Control}
+\label{sec:droop}
 The droop control method originated with the relationship between frequency and active power for synchronous machines due to rotating inertia. As a load increases the machine will slow and its frequency will droop. It has since been adapted into power conversion control schemes as well despite the lack of physical inertia. It is mathematically derived from the equation describing active power flow through an impedance $ R + jX $ from point 1 to point 2.
 \begin{equation}
 P = \frac{V_{1}}{R^2 + X^2} \big( R \left( V_{1}-V_{2}\cos{\delta_{12}} \right) +X V_{2} \sin{\delta_{12}} \big)
@@ -134,7 +117,7 @@ It should be noted, however, the droop equations are only valid under certain co
 AC microgrids and DC microgrids are both technically feasible, but the selection of which is optimal heavily depends on the types of loads and power sources used. Furthermore, the choice is not necessarily a binary decision. AC\slash DC hybrid systems can provide benefits of each, but at greater cost. This section will compare and contrast the different architectures.
 
 \subsection{Efficiency}
-In each conversion step there is some power loss due to inefficiencies. Sequential conversions can add up to a significant losses. Distributing AC and DC power to their respective loads separately can eliminate many conversion steps but it is unrealistic to completely remove all steps. \autoref{tab:conv_eff} shows that, at rated values, typical losses among different power converters are not symmetric. Transformers are the most efficient, followed by inverters and DC-DC converters. Rectifiers are experience the most loss. When operated below rated values all conversion devices experience drops in efficiency
+In each conversion step there is some power loss due to inefficiencies. Sequential conversions can add up to a significant losses. Distributing AC and DC power to their respective loads separately can eliminate many conversion steps but it is unrealistic to completely remove all steps. \autoref{tab:conv_eff} shows that, at rated values, typical losses among different power converters are not symmetric. Transformers are the most efficient, followed by inverters and DC-DC converters. Rectifiers are experience the most loss. When operated below rated values all conversion devices experience drops in efficiency.
 
 \input{tables/conv_eff_table} 
 % Keep a look out for conversion efficiency more recent than 2006 and 2008
@@ -147,12 +130,12 @@ Electric machinery and power electronic conversion devices introduce undesired h
 Another important factor in grid stability is how quickly and safely the system can clear an electrical fault. The sinusoidal oscillation of AC systems means there is a periodic zero crossing 60 times each second.\footnote{For regions that operate on 60 Hz.} This means faults can be cleared more quickly in AC systems than in DC systems.  However, AC systems typically experience larger transient spikes during fault events when compared to comparable DC systems \cite{Estes2011}. 
 
 \subsection{Economics}
-Most existing electrical infrastructure is built around AC grids rather than DC grids. Furthermore off the shelf electrical appliances generally assume AC power is available and will rectify to DC if needed. These factors indicate the installation of an AC distribution system is more economical. However, AC systems require three lines, and sometimes a forth neutral line, while DC systems only require two, and sometimes a third neutral line.\footnote{Although work has been done on Single Line Ground Return systems which only require one line.} Although the economic benefit of fewer electrical lines is much more significant to long distance transmission rather than distribution to near by loads.
+Most existing electrical infrastructure is built around AC grids rather than DC grids. Furthermore off the shelf electrical appliances generally assume AC power is available and will rectify to DC if needed. These factors indicate the installation of an AC distribution system is more economical. However, AC systems require three lines for each phase, and sometimes a forth neutral line, while DC systems only require two, and sometimes a third neutral line.\footnote{Although work has been done on Single Line Ground Return systems which only require one line.} Although the economic benefit of fewer electrical lines is much more significant to long distance transmission rather than distribution to near by loads.
 
 One benefit of DC microgrids over AC is the necessity to control only voltage level rather than voltage and frequency. A simplified control scheme can reduce the cost combining power sources into a DC bus before distribution avoids the necessity of synchronization \cite{Lotfi2015}.
 
 \section{Thesis Organization}
 With the background information on microgrids addressed in \autoref{ch:intro} above, the remainder of the thesis will be organized as followed: \autoref{ch:conv} will delve deeper into background of power conversion. This includes the conversion of heat to electricity, with a focus on low-temperature sources, as well electrical power conversion, focusing on the pros and cons of different topologies. 
 %\autoref{ch:geothermal} will address necessary background on geothermal power generation. 
-\autoref{ch:model} will detail the model, its validation, and the simulation results. \autoref{ch:analysis} will describe the analyses to be done on grid stability as well as economic viability.  \autoref{ch:conclusion} will conclude the thesis and describe future work to be conducted on the topic.
+\autoref{ch:model} will detail the model and its validation. \autoref{ch:analysis} will analyze the simulation results of the greenfield and brownfield scenario.  \autoref{ch:conclusion} will conclude the thesis and describe future work to be conducted on the topic.
 

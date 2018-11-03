@@ -19,6 +19,9 @@
 %allows multiple rows in a single column withing a table
 \usepackage{multirow}
 
+%allow row shading in table environments
+\usepackage{xcolor}
+
 \usepackage{amsmath, amssymb, amsfonts} % Thanks, AMS!
 %\usepackage{fixltx2e} % Allows \(\) in captions, amongst other things.
 %\usepackage{ppl} % The Paladino font (tough to find?)
@@ -47,8 +50,10 @@
 %For using units in equation mode 
 \usepackage{siunitx}
 \DeclareSIUnit\rpm{rpm}
+\DeclareSIUnit\gpm{gpm}
 \DeclareSIUnit\voltamp{VA}
 \DeclareSIUnit\voltampreactive{VAR}
+\DeclareSIUnit\degreeFahrenheit{\degree{}F}
 
 %Allows for drawing circuit diagrams
 %\usepackage[siunitx]{circuitikz}
@@ -60,12 +65,16 @@
 %certain default hyphenations aren't what I want
 \hyphenation{geo-ther-m-al}
 
+%NO WIDOWED OR ORPHANED LINES
+\widowpenalty10000
+\clubpenalty10000
+
 %Various title/signature page info
 \author{Nathan Green}
 \title{Prime Power Generation and Distribution in Microgrids with Geothermal Organic Rankine Cycle Turbine and Self Excited Induction Generator}
 
 \degreeyear{2018}
-\degreemonth{}
+\degreemonth{December}
 \degree{Master of Science}
 %\degreesubject{Electrical Engineering}
 \department{Electrical \& Computer Engineering}
@@ -87,10 +96,12 @@
 \college{College of Engineering \& Mines}
 
 \begin{document}
-
+\pagenumbering{roman}
 %\makesig
-%\maketitle
+\maketitle
 \include{NG_abstract}
+\include{NG_acknowledgements}
+
 
 %Table of Contents and such
 \tableofcontents
@@ -105,7 +116,7 @@
 %\include{NG_geotherm}	%Electronic conversion and thermal/mechanical conversion chapters combined
 \include{NG_model}
 \include{NG_analysis}
-
+\include{NG_conclusion}
 
 \bibliographystyle{ieeetr}
 \bibliography{NG_bib}

@@ -4,7 +4,9 @@
 
 %allows for hyperlink
 \usepackage{hyperref}
-
+%re-define how \autoref (found in hyperref package) prints a chapter reference
+%Default is "chapter", but I want "Chapter" instead
+\renewcommand*{\chapterautorefname}{Chapter}
 %\usepackage{url}
 
 %allows for degree symbol, among other things presumably
@@ -12,26 +14,50 @@
 
 %draws bounding boxes around the major page elements. For troubleshooting
 %\usepackage[showframe]{geometry}
-\usepackage[margin=0.2in]{geometry}
 
-%Allows for drawing circuit diagrams
-%\usepackage[siunitx]{circuitikz}
-\usepackage{circuitikz}
 
+%allows multiple rows in a single column withing a table
 \usepackage{multirow}
 
+%allow row shading in table environments
+\usepackage{xcolor}
+
 \usepackage{amsmath, amssymb, amsfonts} % Thanks, AMS!
-\usepackage{fixltx2e} % Allows \(\) in captions, amongst other things.
+%\usepackage{fixltx2e} % Allows \(\) in captions, amongst other things.
 %\usepackage{ppl} % The Paladino font (tough to find?)
-\usepackage{pxfonts} % Paladino-like fonts
+%\usepackage{pxfonts} % Paladino-like fonts
 \usepackage{graphicx, float} % Graphics stuff
+\usepackage[space]{grffile}
 \usepackage{verbatim} % Mostly for the comment environment.
 %\usepackage{chapterbib} % This is an option for those bundling papers.
 %\usepackage[square]{natbib}
 %\usepackage{tocbibind} % This fixes the "bibliography in ToC" problem.
-                        % Use with chapterbib.
+% Use with chapterbib.
+\usepackage{booktabs}                       
+\usepackage{cancel}
+%\usepackage{caption}
+\usepackage{cleveref}
+\usepackage{colortbl}
+\usepackage{csquotes}
+\usepackage{helvet}
+\usepackage{mathpazo}
+\usepackage{listings}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+%\usepackage{translator}
+%\usepackage{beamer}
 
+%For using units in equation mode 
+\usepackage{siunitx}
+\DeclareSIUnit\rpm{rpm}
+\DeclareSIUnit\gpm{gpm}
+\DeclareSIUnit\voltamp{VA}
+\DeclareSIUnit\voltampreactive{VAR}
+\DeclareSIUnit\degreeFahrenheit{\degree{}F}
 
+%Allows for drawing circuit diagrams
+%\usepackage[siunitx]{circuitikz}
+\usepackage{circuitikz}
 
 
 
@@ -39,8 +65,10 @@
 
 
 %Each table is included
-%\include{conv_eff_table}
-\include{orc_manufacturers_table}
-
-
+\input{conv_eff_table}
+%\input{orc_manufacturers_table}
+%\input{}
+%\input{}
+\bibliography{../NG_bib}
+\bibliographystyle{ieeetr}
 \end{document}
