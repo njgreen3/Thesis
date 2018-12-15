@@ -12,7 +12,9 @@
 *.idx
 *.ind
 *.ilg
-*.pdf
+*.nls
+*.nlo
+NG*.pdf
 *.gz
 *.zip
 *~
