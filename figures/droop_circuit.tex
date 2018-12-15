@@ -1,0 +1,17 @@
+\begin{figure}[h]
+	
+\centering
+
+
+\begin{tikzpicture}
+\draw[color=black, thick]
+%Input
+(0,2) to [open, v^=$V_{1}$, o-o] (0,0){} 
+(0,2) to [R, l=$R$] (3,2) to [L, l=$X$] (6,2) to [open, v=$V_{2}$, o-o] (6,0) -- (0,0){}
+
+;
+\end{tikzpicture}
+\caption{Circuit diagram of demonstrating power flow from $V_1$ to $V_2$ across impedance $R + jX$.}
+\label{fig:droop_circuit}
+
+\end{figure}

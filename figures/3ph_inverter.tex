@@ -1,0 +1,55 @@
+\begin{figure}[h]
+	
+\centering
+
+\begin{tikzpicture}
+\draw[color=black, thick]
+%DC leads
+(0,0) -- (7,0){}
+(0,7) -- (7,7){}
+
+%Input 
+%(1,7) to [C, *-*] (1,0){}
+(0,7) to [V, l_=$v_{dc}$] (0,0)
+
+%A switches
+(3,5.5) node[nmos] (mos) {}
+(mos.gate) node[anchor=east] {}
+(mos.drain) to [short, -*] (3,7){}
+(mos.source) -- (3,4.5) to [short, *-o] (10,4.5) to [short, l_=$v_{A}$] (10,4.5){}
+
+(3,1.5) node[nmos] (mos) {}
+(mos.gate) node[anchor=east] {}
+(mos.drain) -- (3,4.5){}
+(mos.source) to [short, -*] (3,0){}
+
+%B switches
+(5,5.5) node[nmos] (mos) {}
+(mos.gate) node[anchor=east] {}
+(mos.drain) to [short, -*] (5,7){}
+(mos.source) -- (5,3.5) to [short, *-o] (10,3.5) to [short, l_=$v_{B}$] (10,3.5){}
+
+(5,1.5) node[nmos] (mos) {}
+(mos.gate) node[anchor=east] {}
+(mos.drain) -- (5,3.5){}
+(mos.source) to [short, -*] (5,0){}
+
+%C switches
+(7,5.5) node[nmos] (mos) {}
+(mos.gate) node[anchor=east] {}
+(mos.drain) -- (7,7){}
+(mos.source) -- (7,2.5) to [short, *-o] (10,2.5) to [short, l_=$v_{C}$] (10,2.5){}
+
+(7,1.5) node[nmos] (mos) {}
+(mos.gate) node[anchor=east] {}
+(mos.drain) -- (7,2.5){}
+(mos.source) -- (7,0){}
+
+
+;
+\end{tikzpicture}
+
+\caption{Simplified diagram of a three phase inverter.}
+\label{fig:3ph_inverter}
+
+\end{figure}

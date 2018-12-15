@@ -1,5 +1,5 @@
 %\documentclass[a4paper,12pt]{report}
-\documentclass[oneside,12pt]{uafthesis}
+\documentclass[twoside,12pt]{uafthesis}
 
 
 %allows for hyperlink
@@ -7,10 +7,54 @@
 %re-define how \autoref (found in hyperref package) prints a chapter reference
 %Default is "chapter", but I want "Chapter" instead
 \renewcommand*{\chapterautorefname}{Chapter}
+\renewcommand*{\subsubsectionautorefname}{subsection}
 %\usepackage{url}
 
 %allows for degree symbol, among other things presumably
 \usepackage{textcomp}
+
+%allows for the construction of a nomenclature section
+\usepackage[intoc]{nomencl}
+%\usepackage{nomencl}
+\makenomenclature
+\setlength{\nomitemsep}{0.1em}
+\renewcommand{\nomname}{List of Symbols}
+\newcommand{\nomunit}[1]{%
+	\renewcommand{\nomentryend}{\hspace*{\fill}#1}}
+\renewcommand{\nompostamble}{%
+	\cleardoublepage}
+\makeatletter
+\def\thenomenclature{%
+	\@chapteronefalse
+	\if@arabic\relax\else\renewcommand{\thepage}{\roman{page}}\fi
+	\chapter*{\nomname
+		\@mkboth{\uppercase{\nomname}}%
+				{\uppercase{\nomname}}}
+	%\@chapteronetrue
+	\if@intoc\addcontentsline{toc}{section}{\nomname}\fi%
+	\nompreamble
+	\list{}{%
+		\labelwidth\nom@tempdim
+		\leftmargin\labelwidth
+		\advance\leftmargin\labelsep
+		\itemsep\nomitemsep
+		\let\makelabel\nomlabel}
+	%\nompostamble
+	%\list{}{%
+	%	\newpage\renewcommand{\thepage}{\roman{page}}}
+}
+\makeatother
+
+%for grouping withing nomenclature section
+\usepackage{etoolbox}
+\renewcommand\nomgroup[1]{%
+	\item[\bfseries
+		\ifstrequal{#1}{V}{Variables}{%
+		\ifstrequal{#1}{S}{Subscripts}{%
+		\ifstrequal{#1}{B}{Acronyms}{}}}%
+	]}
+
+
 
 %draws bounding boxes around the major page elements. For troubleshooting
 %\usepackage[showframe]{geometry}
@@ -20,7 +64,7 @@
 \usepackage{multirow}
 
 %allow row shading in table environments
-\usepackage{xcolor}
+\usepackage[table]{xcolor}
 
 \usepackage{amsmath, amssymb, amsfonts} % Thanks, AMS!
 %\usepackage{fixltx2e} % Allows \(\) in captions, amongst other things.
@@ -43,7 +87,7 @@
 \usepackage{mathpazo}
 \usepackage{listings}
 \usepackage{pgfplots}
-\usepackage{xcolor}
+
 %\usepackage{translator}
 %\usepackage{beamer}
 
@@ -57,7 +101,11 @@
 
 %Allows for drawing circuit diagrams
 %\usepackage[siunitx]{circuitikz}
-\usepackage{circuitikz}
+\usepackage[american]{circuitikz}
+
+%allows writing of chemical formulea
+\usepackage{chemformula}
+
 
 %Not sure exactly why this line is needed but I got a warning that said: running in backwards compatibility mode (unsuitable tick labels; missing features). Consider writing \pgfplotsset{compat=1.16} into your preamble.
 \pgfplotsset{compat=1.16}
@@ -95,6 +143,7 @@
 \prevdegrees{B.S.}
 \college{College of Engineering \& Mines}
 
+
 \begin{document}
 \pagenumbering{roman}
 %\makesig
@@ -109,9 +158,21 @@
 \listoftables
 %\listofothermaterials
 %\listofappendices
+%\cleardoublepage% or \clearpage
+%\pagenumbering{roman}
+%\setcounter{page}{13}
+%\addcontentsline{toc}{section}{\nomname}
 
+%\markboth{\nomname}{\nomname}% maybe with \MakeUppercase
+\printnomenclature[0.75in]
+
+%\cleardoublepage
+
+
+%\pagenumbering{arabic}
 %Each chapter is included
 \include{NG_intro}
+
 \include{NG_conv}
 %\include{NG_geotherm}	%Electronic conversion and thermal/mechanical conversion chapters combined
 \include{NG_model}

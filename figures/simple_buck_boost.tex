@@ -1,0 +1,31 @@
+\begin{figure}[h]
+	
+\centering
+
+
+\begin{tikzpicture}[american voltages]
+\draw[color=black, thick]
+%Input
+(0,0) to [V, l=$V_{in}$, invert] (0,3){}
+
+%high diode
+(7,3) -- (6,3) to [D*, *-*] (3,3){}
+
+%switch
+(0,3) to [Tnmos] (3,3) {}
+
+%inductor
+(3,0) to [L, *-*] (3,3){}
+
+%low
+(0,0) -- (7,0){}
+
+%output
+(7,0) to [open, v=$V_{out}$, o-o] (7,3){}
+(6,3) to [C, *-*] (6,0){}
+;
+\end{tikzpicture}
+\caption{Simplified diagram of a buck-boost converter.}
+\label{fig:simple_buck_boost}
+
+\end{figure}

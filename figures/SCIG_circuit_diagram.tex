@@ -5,20 +5,21 @@
 \begin{tikzpicture}[american voltages]
 \draw[color=black, thick]
 %Input
-(0,0) to [open, l=$V_{ph}$, o-o] (0,4){}
+%(0,0) to [open, l=$V_{ph}$, o-o] (0,4){}
+(-1,4) to [R, v=$V_{ph}$, l=$R_{load}$] (-1,0){}
 
 %low
-(0,0) -- (9,0){}
+(-1,0) -- (9,0){}
 
 %stator
-(0,4) -- (1.5,4) to [R, l=$R_{s}$] (3,4) to [L, l = $j X_{s}$] (4.5,4){}
+(-1,4) -- (1.5,4) to [R, l=$R_{s}$] (3,4) to [L, l = $j X_{s}$,f_<=$I_{s}$] (4.5,4){}
 
 %rotor
-(4.5,4) -- (5.5,4) to [R, l=$R_{r}$] (7.5,4) to [L, l = $j X_{r}$] (9,4) to [R, l=$R_{r}\frac{1-s}{s}$] (9,0){}
+(4.5,4) -- (5.5,4) to [R, l=$R_{r}$, f<^=$I_{r}$,] (7.5,4) to [L, l = $j X_{r}$] (9,4) to [R, l=$R_{r}\frac{1-s}{s}$] (9,0){}
 
 %core
-(5,4) to [short, *-*] (5,3){}
-(4.5,3) -- (5.5,3) to [L, l = $j X_{m}$] (5.5,1) -- (4.5,1) to [R, l=$R_{c}$] (4.5,3){}
+(5,4) to [short, *-*, f=$I_{core}$] (5,3){}
+(4.5,3) -- (5.5,3) to [L, l = $j X_{m}$, v=$E$] (5.5,1) -- (4.5,1) to [R, l=$R_{c}$] (4.5,3){}
 (5,1) to [short, *-*] (5,0){}
 
 %external excitaion capacitor
@@ -28,7 +29,7 @@
 ;
 \end{tikzpicture}
 
-\caption{Single phase diagram of a three phase squirrel cage induction machine. $V_{ph}$ and $s$ are the phase voltage and slip of the generator. }
+\caption{Single phase equivalent circuit of a three phase squirrel cage induction machine with a load resistance of $R_{load}$.} % $V_{ph}$ and $s$ are the phase voltage and slip of the generator. }
 \label{fig:SCIG__circuit_diagram}
 
 \end{figure}

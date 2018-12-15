@@ -1,21 +1,21 @@
-\begin{table}%[h]
+\begin{table}[h]
 	\centering
-	\caption{Comparison of output variables for the verification of the ORC Model.}
+	\caption{Comparison of output variables for the validation of the ORC prime power system model.}
 	%\rowcolors{5}{}{gray!10}
 	\label{tab:verification_results01}
 	\begin{tabular}{rllllllll}
 		\toprule
-		                                      & Case  &       &       &       &       &       &       &         \\ \cline{2-9}
+		                                      & Test  &       &       &       &       &       &       &         \\ \cline{2-9}
 		                                      & 1     &       & 2     &       & 3     &       & 4     &         \\
 		                                      & Meas. & Model & Meas. & Model & Meas. & Model & Meas. & Model   \\ \midrule
-		         $P_{gross}(\si{\kilo\watt})$ & 40.7  & 40.6  & 31.8  & 31.6  & 29.2  & 29.2  & 22.7  & 23.0    \\
+		         $P_{out}(\si{\kilo\watt})$ & 40.7  & 40.6  & 31.8  & 31.6  & 29.2  & 29.2  & 22.7  & 23.0    \\
 		          $P_{pump}(\si{\kilo\watt})$ & 2.6   & 4.9   & 1.9   & 5.6   & 1.5   & 4.1   & 1.3   & 4.2     \\
 		   %$P_{source pump}(\si{\kilo\watt})$ & 9.6   & -     & 1.0   & -     & 10.0  & -     & 1.0   & -       \\
 		     %$P_{sink pump}(\si{\kilo\watt})$ & 3.5   & -     & 1.0   & -     & 3.5   & -     & 1.0   & -       \\
-		  $P_{evap.}(\si{\kilo\watt})$ & 519   & 621   & 413   & 540   & 393   & 540   & 328   & 466     \\
-		  $P_{cond/}(\si{\kilo\watt})$ & 464   & 583   & 385   & 512   & 356   & 514   & 303   & 446     \\
-		       $T_{source,out}(\si{\kelvin})$ & 357.2 & 355.8 & 350.1 & 345.9 & 347.9 & 346.0 & 342.0 & 337.5   \\
-		         $T_{sink,out}(\si{\kelvin})$ & 292.1 & 294.2 & 296.9 & 300.9 & 290.1 & 293.0 & 294.2 & 298.7   \\ \bottomrule
+ $\dot{Q}_{evap}(\si{\kilo\watt}_\text{th})$ & 519   & 621   & 413   & 540   & 393   & 540   & 328   & 466     \\
+ $\dot{Q}_{cond}(\si{\kilo\watt}_\text{th})$ & 464   & 583   & 385   & 512   & 356   & 514   & 303   & 446     \\
+		       $T_{source\ out}(\si{\kelvin})$ & 357.2 & 355.8 & 350.1 & 345.9 & 347.9 & 346.0 & 342.0 & 337.5   \\
+		         $T_{sink\ out}(\si{\kelvin})$ & 292.1 & 294.2 & 296.9 & 300.9 & 290.1 & 293.0 & 294.2 & 298.7   \\ \bottomrule
 		      %$P_{setpoint}(\si{\kilo\watt})$ &       &       &       &       &       &       &       &         \\
     %$\dot{m}_{wf}(\si{\kilogram\per\second})$ & -     &       & -     &       & -     &       & -     &         \\ 
 \end{tabular}

@@ -1,0 +1,39 @@
+\begin{figure}[h]
+	
+\centering
+
+\begin{tikzpicture}
+\draw[color=black, thick]
+% AC leads
+% Wye neutral
+(0,2) -- (0,5)
+
+% Three phase voltage sources
+(0,5) to [sV, l=$v_A$] (2,5) to [short, -*] (3,5){}
+(0,3.5) to [sV, l=$v_B$, *-] (2,3.5) to [short, -*] (4.5,3.5){}
+(0,2) to [sV, l=$v_C$] (2,2) to [short, -*] (6,2){}
+
+% A ph diodes
+(3,0) to [D*] (3,2) -- (3,5) to [D*] (3,7){}
+
+% B ph diodes
+(4.5,0) to [D*, *-] (4.5,2) -- (4.5,5) to [D*, -*] (4.5,7){}
+
+% C ph diodes
+(6,0) to [D*, *-] (6,2) -- (6,5) to [D*, -*] (6,7){}
+
+
+%DC leads
+(3,7) to [short, -o] (9,7){}
+(3,0) to [short, -o] (9,0){}
+
+%Output 
+(8,7) to [C, *-*] (8,0){}
+(9,7) to [open, l=$v_{dc}$] (9,0)
+;
+\end{tikzpicture}
+
+\caption{Simplified diagram of a three phase full-bridge rectifier.}
+\label{fig:3ph_rectifier}
+
+\end{figure}

@@ -23,6 +23,9 @@
 %%  Edited by Nathan Green 2016/09/15
 %%        Changed myheadings definition to put page numbers centered in the footer
 %%        Subsubsections are now numbered
+%%  Edited by Nathan Green 2018/11/29
+%%        Updated with new title section to reflect new UAF guidelines
+%%        Increased penalty for widowed and orphaned lines in the bibliography
 
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{uafthesis}
@@ -844,7 +847,8 @@ RECOMMENDED:\@comitteespace
       \else
         \renewcommand\newblock{\hskip .11em \@plus.33em \@minus.07em}%
       \fi
-      \sloppy\clubpenalty4000\widowpenalty4000%
+      \sloppy\clubpenalty10000\widowpenalty10000%\sloppy\clubpenalty4000\widowpenalty4000%
+      \interlinepenalty=10000
       \sfcode`\.=\@m
       %\@pageheadingtrue
       }

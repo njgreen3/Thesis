@@ -1,150 +1,250 @@
-\chapter{Model Description}
+\chapter{Prime Power ORC System Model}
 \label{ch:model}
 
-The model attempts to recreate a microgrid which uses some form of DER as a primary power source along side energy storage in order power the load. \autoref{fig:abridged_flow_diagram_label} shows a simplified flow diagram of the model using an ORC for the DER. The components include a ORC as a source, a load, and an inverter to link the source two. In the figure, the blue lines represent electrical connections, while green represents the flow of data and component parameters. The ORC block is made up of heat exchangers, an isentropic pump, an isentropic expander, and an induction generator. 
-\begin{comment}
-The load block \verb|one line description of load|. 
-The energy storage block \verb|one line description of energy storage|. 
-The inverter block \verb|one line description of inverter|.
-\end{comment}
-\input{figures/abridged_flow_diagram}
+The model attempts to recreate a microgrid which uses an ORC fed by geothermal resources as a primary power source in order to form a grid with a self-excited induction generator using full power electronic conversion. \autoref{fig:full_flow_diagram_label} shows the ORC prime power system model flow diagram with all the variable inputs on the left and outputs on the right. The internal blocks include the ORC, the pump drive motor, the SEIG, and the full power electronic grid-forming inverter. The ORC block, itself, is composed of evaporating and condensing heat exchangers, as well as a pump and expander, both of which are assumed to be non-ideal isentropic processes.
+\input{figures/full_flow_diagram}
 
-\section{Organic Rankine Cycle Generator}
-The ORC generator block links the thermal, mechanical, and electric components of them model. The thermal properties of the fluids were obtained from a Matlab wrapper of the CoolProp library. \cite{Bell2014} Thermal conditions of source, sink, and working fluids are fed into the Rankine Cycle portion of the model, which returns a mechanical power. Electrical conditions, along with the mechanical power, are fed into the generator portion of the model, which returns an electrical output.  
+\section{Organic Rankine Cycle}
+The ORC block, seen in \autoref{fig:orcblock_label} links the thermal, mechanical, and electrical components of the model. The thermal properties of the source, sink, and working fluids were obtained from a MATLAB wrapper of the CoolProp library. Thermal conditions of source, sink, and working fluids are input to the Rankine cycle portion of the model which returns a mechanical power. 
+%Electrical conditions, along with the mechanical power, are input in the generator portion of the model which returns an electrical output. 
+\input{figures/orcblock}
+
+CoolProp is an open source C++ library which contains thermophysical properties of over 110 fluids including the working fluids used in refrigeration processes \cite{Bell2014}. It makes use of Helmholzt energy-explicit equations of state to derive its values, but can also incorporate the REFPROP library developed by the National Institute of Standards and Technology (NIST). Although originally written for C++, wrappers have been developed for many other common programming languages and analytical software including, but not limited to, MATLAB, Python, Java, R, Lab View, and Excel. Due to its wide availability and open source licensing, it has seen much use in the analysis of ORCs \cite{Pezzuolo2016, Pierobon2014}, refrigeration units \cite{Besagni2015}, and other applications \cite{Quoilin2014, Nilsen2016}.
+\nomenclature[B]{NIST}{National Institue of Standards and Technology}
+
+In order to use CoolProp, first a handle is initialized for each of the source, sink, and working fluids. The handle is passed as a static parameter to any of the functions that require any thermophysical calculations. The function uses the handle during any calls of the CoolProp library.
+
+The variable inputs used for the ORC block include the mass flow rates for the source, $\dot{m}_{source}$, sink, $\dot{m}_{sink}$, and working fluids, $\dot{m}_{wf}$ (\si{\kilogram\per\second}), the inlet temperature of the source, $T_{source\ in}$, and sink, $T_{sink\ in}$ (\si{\kelvin}), the absolute pressures for the high side, $p_{hi}$, and low side of the cycle, $p_{low}$, as well as the pressures of source, $p_{source\ in}$, and sink fluid inlets, $p_{sink\ in}$ (\si{\pascal}). In these simulations, $p_{source\ in}$ and $p_{sink\ in}$ are both assumed to be at atmospheric pressure, $p_{atm}$, though that is not a necessary condition. Fixed input parameters include the initial mass specific enthalpy of the working fluid feeding into the evaporator, $h_{init}$ (\si{\joule\per\kilogram}), as well as several values described in \autoref{sec:heatex} and \autoref{sec:isentrope}.
+\nomenclature[S]{$_{source}$}{Source fluid}
+\nomenclature[S]{$_{sink}$}{Sink fluid}
+\nomenclature[S]{$_{init}$}{Inital condition of the working fluid}
+\nomenclature[S]{$_{hi}$}{High pressure side of the cycle}
+\nomenclature[S]{$_{low}$}{Low pressure side of the cycle}
+\nomenclature[S]{$_{atm}$}{Atmospheric pressure}
+
+Before the inputs are fed into the sub-blocks, the fluid temperature and pressure combinations are converted to mass specific enthalpy values using CoolProp. Similarly, mass specific enthalpy and pressure combinations are converted to temperatures before being output.
+
+The output variables from the ORC block include the mechanical power produced by the expander, $P_{mech}$ and consumed by the pump, $P_{mech\ pump}$ (\si{\watt}), the heat flow rates of the evaporator, $\dot{Q}_{evap}$, and condenser, $\dot{Q}_{cond}$ (\si{\watt\textsubscript{th}}), and the temperatures of the water, $T_{water}$, and working fluid, $T_{wf}$ (\si{\kelvin}), at various points in the cycle. Specifically, $T_{water}$ is composed of the inlet and outlet temperatures of the source and sink fluids, while $T_{wf}$ contains temperatures at the inlets and outlets of the pump and expander and assumes there is no temperature drop through the lines to and from the heat exchangers.
 
 \subsection{Evaporator and Condenser}
-The evaporator and the condenser are both represented using a heat exchanger script.  The function takes as inputs parameters about the high and low temperature fluids, specifically the inlet temperatures or enthalpies (\si{\kelvin} or \si{\joule\per\kilogram}), mass flow rates (\si{\kilogram\per\second} ), inlet pressures (\si{\pascal}), and fluid names, as well as parameters about the exchanger itself such as the overall heat transfer coefficient (\si{\watt\per\kelvin\per\meter\squared}), the heat transfer area (\si{\meter\squared}), and the heat exchanger type (e.g. counter or parallel flow). The function output is made up of the heat flow rate (\si{\watt}), and the temperatures or enthalpies at the outlets (\si{\kelvin} or \si{\joule\per\kilogram}). 
+\label{sec:heatex}
+The evaporator and the condenser are both represented using a heat exchanger script.  A block diagram of the function can be seen in \autoref{fig:heatexblock_label}. The function takes as inputs variables characterizing hot and cool fluids, specifically the inlet mass specific enthalpies, $h_{h,i}$ and $h_{c,i}$ (\si{\joule\per\kilogram}), mass flow rates, $\dot{m}_{h,i}$ and $\dot{m}_{c,i}$ (\si{\kilogram\per\second}), and inlet pressures, $p_{h,i}$ and $p_{c,i}$ (\si{\pascal}). Additional static inputs include CoolProp fluid handles, as well as parameters about the exchanger itself such as the overall heat transfer coefficient, $U$ (\si{\watt\per\kelvin\per\meter\squared}), the heat transfer area, $A$ (\si{\meter\squared}), and a string describing the heat exchanger type (e.g. counter or parallel flow). The function output is made up of the heat flow rate, $\dot{Q}$ (\si{\watt}\textsubscript{th}), and the mass specific enthalpies at the outlets, $h_{h,o}$ and $h_{c,o}$ (\si{\joule\per\kilogram}). 
+\input{figures/heatexblock}
 
-In order to calculate the desired values, the Number of Transfer Units (NTU) method is used. Described in The Fundamentals of Heat and Mass Transfer, \cite{Incropera} this process calculates the output heat flow, $\dot{Q}$, relative to a theoretical maximum heat flow, $\dot{Q}_{max}$. This potential heat flow would be realized using an infinitely long counter flow geometry and is calculated as
+In order to calculate the desired values, the Number of Transfer Units (NTU) method is used. Described in The Fundamentals of Heat and Mass Transfer \cite{Incropera}, this process calculates the output heat flow, $\dot{Q}$, relative to a theoretical maximum heat flow, $\dot{Q}_{max}$. This potential heat flow would be realized using an infinitely long counter flow geometry and is calculated as
 \begin{equation}
 \dot{Q}_{max} = C_{min}\left(T_{h,i} - T_{c,i}\right)
 \end{equation}
-where $C_{min}$ is the smaller heat capacity rate of the hot and cool fluids and $T_{h,i}$ and $T_{c,i}$ are the inlet temperatures of hot and cool fluids respectively. The heat capacity rate is the product of mass flow rate, $ \dot{m} $, and the mass specific heat at constant pressure, $ c_p $. 
+where $C_{min}$ is the smaller heat capacity rate of the hot and cool fluids and $T_{h,i}$ and $T_{c,i}$ are the inlet temperatures of hot and cool fluids, respectively. The heat capacity rate is the product of mass flow rate and the mass specific heat at constant pressure, or $ C = \dot{m} \cdot c_p $. 
+
+\nomenclature[V]{$\dot{Q}$}{Themal heat flow rate\nomunit{\si{\kilo\watt}\textsubscript{th}}}
+\nomenclature[V]{$C$}{Heat capacity rate of a fluid\nomunit{\si{\joule\per\second\per\kelvin}}}
+\nomenclature[V]{$NTU$}{Number of transfer units of a heat exchanger\nomunit{\si{\kelvin\second\per\joule}}}
+\nomenclature[V]{$\dot{m}$}{Mass flow rate\nomunit{\si{\kilogram\per\second}}}
+\nomenclature[V]{$c_p$}{Mass specific heat of a fluid at constant pressure\nomunit{\si{\joule\per\kilogram\per\kelvin}}}
+\nomenclature[S]{$_{min}$}{Minimum}
+\nomenclature[S]{$_{max}$}{Maximum}
+\nomenclature[S]{$_{h,i}$}{Hot fluid inlet}
+\nomenclature[S]{$_{c,i}$}{Cool fluid inlet}
 
 The heat flow rates of the hot and cool fluids are related by the effectiveness, $\epsilon$, which is defined as 
 \begin{equation}
 \label{eq:effectiveness_def}
-\epsilon \equiv \frac{\dot{Q}}{\dot{Q}_{max}}
+\epsilon \equiv \frac{\dot{Q}}{\dot{Q}_{max}}.
 \end{equation}
+\nomenclature[V]{$\epsilon$}{Effectiveness of a heat exchanger.}
 
-Numerically, the value of $\epsilon$ is a function of the ratio of the fluids' heat capacities, $C_r = \frac{C_{min}}{C_{max}}$, as well as the exchanger's Number of Transfer Units, $NTU = \frac{U \cdot A}{C_{min}}$, where $U$ is the overall heat transfer coefficient and $A$ is the total heat transfer area. Additionally, the direction of fluid flow changes the method of calculation. In parallel flow heat exchangers, the effectiveness is calculated as
+Numerically, the value of $\epsilon$ is a function of the ratio of the fluids' heat capacity rates, $C_r = \frac{C_{min}}{C_{max}}$, as well as the exchanger's Number of Transfer Units, $NTU = \frac{U \cdot A}{C_{min}}$, where $U$ is the overall heat transfer coefficient and $A$ is the total heat transfer area. Additionally, the direction of fluid flow changes the method of calculation. In parallel flow heat exchangers the effectiveness is calculated as
 \begin{equation}
 \epsilon = \frac{1 - \exp\left[-NTU\left(1 + C_r\right)\right]}{1 + C_r}
 \end{equation}
 while counter flow devices use
 \begin{equation}
-\epsilon = \frac{1 - \exp\left[-NTU\left(1 - C_r\right)\right]}{1 - C_r\exp\left[-NTU\left(1 - C_r\right)\right]}
+\epsilon = \frac{1 - \exp\left[-NTU\left(1 - C_r\right)\right]}{1 - C_r\exp\left[-NTU\left(1 - C_r\right)\right]}.
 \end{equation}
+\nomenclature[V]{$U$}{Overall heat transfer coffecicient of a heat exchanger\nomunit{\si{\joule\per\meter\squared\per\second\per\kelvin}}}
+\nomenclature[V]{$A$}{Heat transfer area of a heat exhcanger\nomunit{\si{\meter\squared}}}
+\nomenclature[S]{$_{r}$}{Ratio}
 
 Once the effectiveness and maximum heat transfer rate are determined, equation \ref{eq:effectiveness_def} is used to calculate the actual rate of heat flow, $\dot{Q}$. Finally, the change in temperature for each fluid is calculated based on their respective heat capacity rates at initial conditions and the rate of heat flowing between them. 
 If the change in temperature for either fluid would result in vaporization or condensation, then the values must be recalculated because the specific heat is effectively infinite while the fluid is changing states. 
 
-First, the heat flow rate necessary to have the fluid begin changing its state is determined and the fraction of this value relative to initial heat flow rate is calculated. 
-The heat transfer area is reduced by this fraction and the function is re-run inputing the state of the two fluids as the one fluid begins to change phase. If enough heat flows between the two fluids such that the one completes the phase change, then the function is run a third time with the heat transfer area modified again. 
+First, the heat flow rate necessary to have the fluid begin changing its state is determined and the fraction of this value relative to the initial heat flow rate is calculated. 
+The heat transfer area is reduced by this fraction and the function is repeated by inputing the state of the two fluids as the one fluid begins to change phase. If enough heat flows between the two fluids such that the one completes the phase change, then the function is repeated a third time with the heat transfer area modified again. 
 
-Within this script there are certain assumptions made in order to calculate the output values. The function will not return accurate results if both fluids simultaneously undergo a phase change because the ratio of heat capacities, $C_r$, will be undefined. Additionally, Ambient temperature and associated heat flow to the external environment is not accounted for in the script. Finally, it is assumed the pressure drop from inlet to outlet is negligible for both the high and low temperature fluids. 
+Within this script there are certain assumptions made in order to calculate the output values. The function will not return accurate results if both fluids simultaneously undergo a phase change because the ratio of heat capacities, $C_r$, will be undefined. Additionally, ambient temperature and associated heat flow to the external environment is not accounted for in the script. Finally, it is assumed the pressure drop from inlet to outlet is negligible for both the high and low temperature fluids. 
+\nomenclature[S]{$_{wf}$}{Working fluid}
+\nomenclature[S]{$_{water}$}{Water}
+
+%This process is used for both the evaporator and the condenser. For the evaporator, the 
 
 \subsection{Expander and Pump}
-The expander/turbine and pump components are both modeled by a fluid undergoing non-ideal isentropic expansion or compression. For an ideal isentropic process, the fluid will experience some thermodynamic changes while its internal entropy remains constant. 
+\label{sec:isentrope}
+The expander/turbine and pump components are both modeled by a fluid undergoing non-ideal isentropic expansion or compression. For an ideal isentropic process, the fluid will experience some thermodynamic changes while its internal entropy remains constant. During this process, power is produced if the pressure at the inlet is greater than at the outlet, and consumed if inlet pressure is less than that of the outlet. A block diagram of the function can be seen in \autoref{fig:isentropeblock_label}.
+\input{figures/isentropeblock}
 
-The function takes as inputs certain properties of the fluid, such as the inlet temperature or enthalpy (\si{\kelvin} or \si{\joule\per\kilogram}), both the inlet and outlet pressures (\si{\pascal}), and the mass flow rate (\si{\kilogram\per\second}). Also needed is the isentropic efficiency, a unitless parameter of the machine which describes lost power due to deviations from the ideal insentropic process. The function returns the power produced or consumed\footnote{Power is produced if the pressure at the inlet is greater than at the outlet, and consumed if inlet pressure is less than that of the outlet.} (\si{\watt}) and the temperature or enthalpy (\si{\kelvin} or \si{\joule\per\kilogram}) of the fluid at the outlet.
+The function takes as inputs certain properties of the fluid, such as the inlet mass specific enthalpy, $h_i$ \si{\joule\per\kilogram}), both the inlet and outlet pressures, $p_i$ and $p_o$ (\si{\pascal}), and the mass flow rate, $\dot{m}$ (\si{\kilogram\per\second}). Also needed is the fluid CoolProp handle and the isentropic efficiency, $\eta$, a unitless parameter of the machine which describes lost power due to deviations from the ideal isentropic process. The function returns the mechanical power produced or consumed, $P$ (\si{\watt}), and the mass specific enthalpy of the fluid at the outlet, $h_o$ (\si{\joule\per\kilogram}).
 
-Using the inputs and the Cool Prop library, the Mass Specific Entropy, $S$, of the fluid is determined for the fluid at the inlet. In an ideal process, this value would remain constant, so it is used to determine the ideal enthalpy of the outlet. Next the ideal power transferred is calculated as 
+Using the inputs and the CoolProp library, the mass specific entropy, $S$, of the fluid is determined for the fluid at the inlet. In an ideal process this value would remain constant so here it is used to determine the ideal enthalpy of the outlet. Next the ideal power transferred is calculated as 
 \begin{equation}
 \label{eq:power_enthalpy}
-P = \dot{m} \left(H_i - H_o\right)
+P = \dot{m} \left(h_i - h_o\right)
 \end{equation}
-where $H_i$ and $H_o$ are the inlet and outlet enthalpies respectively.
+where $h_i$ and $h_o$ are the inlet and outlet mass specific enthalpies, respectively.
+\nomenclature[V]{$P$}{Mechanical or active electrical power\nomunit{\si{\kilo\watt}}}
+\nomenclature[V]{$S$}{Mass specific entropy of a fluid\nomunit{\si{\joule\per\kilogram\per\kelvin}}}
+\nomenclature[S]{$_{i}$}{Inlet}
+\nomenclature[S]{$_{o}$}{Outlet}
 
-To obtain the mechanical power actually transferred, the isentropic efficiency is applied to the ideal power such that the ideal is necessarily greater than the actual. When the value of $H_i$ is larger than $H_o$, $P$ is positive therefore efficiency is multiplied. When $H_i$ is less than $H_o$, $P$ is negative and ideal power is divided by efficiency. After the mechanical power is calculated, equation \ref{eq:power_enthalpy} is used to find $H_o$ and the fluid temperature at the outlet. 
+To obtain the mechanical power actually transferred, the isentropic efficiency is applied to the ideal power such that the ideal power is necessarily greater than the actual power. When the value of $h_i$ is larger than $h_o$, $P$ is positive therefore efficiency is multiplied. When $h_i$ is less than $h_o$, $P$ is negative and ideal power is divided by efficiency. After the mechanical power is calculated, equation \ref{eq:power_enthalpy} is used to find $h_o$ and the fluid temperature at the outlet. 
 
-\subsection{Induction Generator}
-The generator block models a Squirrel Cage Induction Generator (SCIG) in order to convert the mechanical power to an electrical form. Two different function blocks were created for two scenarios: regulated and unregulated. The former is simpler to model, but the generator requires another firm source\footnote{Or an electrical storage-inverter combination.} to maintain its frequency and voltage. For the latter scenario, the generator's frequency and voltage are allowed to vary. Its leads are connected directly to a power converter which maintains the frequency and voltage of the remaining microgrid. 
+\section{Induction Generator}
+The generator block models a squirrel cage induction generator (SCIG) in order to convert the mechanical power to an electrical form. Furthermore, 
+%Two different function blocks were created for two scenarios: regulated and unregulated. The former is simpler to model, but the generator requires another firm source\footnote{Or an electrical storage-inverter combination.} to maintain its frequency and voltage. For the latter scenario, the generator's frequency and voltage are allowed to vary. Its leads are connected directly to a power converter which maintains the frequency and voltage of the microgrid. 
+to simulate microgrids with no forms of storage or sources beyond the ORC, it is also self-excited. The single phase equivalent circuit %is similar to the regulated SCIG circuit 
+can be seen in \autoref{fig:SCIG__circuit_diagram}.
+%, except the voltage source $V_{ph}$ at the output terminals of the machine is replaced with a resistive load. 
+The model is based off the analysis by Ouazenne et al. of a self excited induction generator in \cite{Ouazenne1983} using admittance balancing. It is assumed the active power losses across the core and the excitation capacitance are negligible. Additionally, it is assumed the load is purely active, as any reactive load can be supplied by the conversion device which regulates the frequency and voltage of the microgrid.
+\nomenclature[B]{SCIG}{Squirrel cage induction generator}
 
-\subsubsection{Regulated SCIG}
-This function block takes several electrical and mechanical parameters as inputs such as the line to line voltage (\si{\volt}) and electrical frequency (\si{\hertz}) at the leads, the mechanical speed at the shaft (\si{\rpm}), the number pole pairs in machine's windings, and coefficients of friction due to bearings (\si{\watt\per\second}) and windage (\si{\watt\per\second\squared}). Also input are the resistive and inductive impedances (\si{\ohm}) of the stator, rotor, and core, as well as the capacitive impedance and equivalent series resistance of external excitation capacitor. The function returns the active (\si{\watt}) and reactive (\si{\voltampreactive}) power outputs and losses.
+The method of admittance balancing relies on the fact that active and reactive power entering and exiting an electrical node must sum to zero. For this analysis, the chosen node is where the rotor, the core, and the combination of the stator, excitation capacitor, and load meet. Since the voltage across each branch is the same and power flow sums to zero, the admittances must sum to zero as well. By breaking the complex admittances into real and imaginary components, a system of equations can be developed to solve for frequency and core reactance. 
 
+%\subsection{Regulated SCIG}
+%This function block takes several electrical and mechanical parameters as inputs such as the line to line voltage (\si{\volt}) and electrical frequency (\si{\hertz}) at the output terminals of the machine, the mechanical speed at the shaft (\si{\rpm}), the number pole pairs in the machine's stator windings, and coefficients of friction due to bearings (\si{\watt\per\second}) and windage (\si{\watt\per\second\squared}). Other inputs are the resistive and inductive impedances (\si{\ohm}) of the stator, rotor, and core, as well as the capacitive impedance and equivalent series resistance of external excitation capacitor. The function returns the active (\si{\watt}) and reactive (\si{\voltampreactive}) power outputs and losses.
+The block, seen in \autoref{fig:scigblock_label} takes as variable inputs the mechanical power produced by the shaft, $P_{mech}$ (\si{\watt}), and 
+%speed of the shaft (\si{\rpm}), 
+the combined power of the total load and the inverter losses, $P_{total\ load} + P_{inv\ loss}$ (\si{\watt}) as seen by the generator. The block outputs include the gross active power produced, $P_{gen\ gross}$ (\si{\watt}), and the active power losses of the generator, $P_{gen\ loss}$ (\si{\watt}).
+%, the mechanical power needed to generate the output, $ P_{mech\ needed}$ (\si{\watt}), and the line to line voltage, $ V_{ll}$ (\si{\volt}).
+\input{figures/scigblock}
+\nomenclature[S]{$_{gen}$}{Generator}
+\nomenclature[S]{$_{gross}$}{Gross output}
+\nomenclature[S]{$_{loss}$}{Device losses}
+
+To calculate the output variables a function was developed to implement the admittance balancing equations. This function takes the input variables of the rotor speed, $n_{mech}$ (\si{\rpm}), the combined load as seen by the generator, $P_{total\ load} + P_{inv\ loss}$ (\si{\watt}), and the line to line voltage magnitude, $\left|V_{ll}\right|$ (\si{\volt}). The output variables of the function include active power generated, $P_{gen\ gross}$ (\si{\watt}), and internally consumed, $P_{gen\ loss}$ (\si{\watt}), 
+%the reactive power consumed (\si{\voltampreactive}), 
+the necessary mechanical power driving the shaft, $P_{mech\ needed}$ (\si{\watt}), and the re-calculated line to line voltage magnitude, $\left|V_{ll}\right|$ (\si{\volt}). The value of $n_{mech}$ is determined by comparing $P_{mech}$ and $P_{mech\ needed}$ from the previous time step, then integrated with an appropriate proportionality constant, $K$. This control scheme increases $n_{mech}$ when $P_{mech\ needed}$ is less than $P_{mech}$ and vice versa.
+%, and the electrical frequency (\si{\hertz}).
+\nomenclature[S]{$_{inv}$}{Inverter}
+\nomenclature[S]{$_{mech\ needed}$}{Mechanical power needed}
+
+The fixed parameter inputs to the admittance balancing function block are the rated frequency of machine, $f_{rated}$ (\si{\hertz}), the number of poles, the resistances (\si{\ohm}) and inductances (\si{\henry}) of the rotor, $R_r$ (\si{\ohm}) and $L_r$ (\si{\henry}), and stator, $R_s$ (\si{\ohm}) and $L_s$ (\si{\henry}), the capacitance of the external excitation capacitors, $C_x$ (\si{\farad}), coefficients of friction due to bearings, $K_{bearing}$ (\si{\watt\per\second}), and windage, $K_{windage}$ (\si{\watt\per\second\squared}), and the magnetization curve comparing the core reactance, $X_m$ (\si{\ohm}) to the internal voltage across the core, $E$ (\si{\volt}). 
+\nomenclature[V]{$R$}{Resistance\nomunit{\si{\ohm}}}
+\nomenclature[V]{$X$}{Reactance\nomunit{\si{\ohm}}}
+\nomenclature[V]{$L$}{Inductance\nomunit{\si{\henry}}}
+\nomenclature[V]{$E$}{Internal induced voltage of rotating machine\nomunit{\si{\volt}}}
+\nomenclature[V]{$n$}{Rotational velocity\nomunit{\si{\rpm}}}
+\nomenclature[V]{$poles$}{Number of poles in electrical machine}
+\nomenclature[S]{$_{s}$}{Stator}
+\nomenclature[S]{$_{r}$}{Rotor}
+\nomenclature[S]{$_{c}$}{Core}
+\nomenclature[S]{$_{m}$}{Magnetization}
+\nomenclature[S]{$_{esr}$}{Electronic series resistance}
+\nomenclature[S]{$_{x}$}{Excitation}
+\nomenclature[S]{$_{load}$}{Load}
+\nomenclature[S]{$_{ll}$}{Line to line}
+\nomenclature[S]{$_{ph}$}{Phase}
+\nomenclature[S]{$_{synch}$}{Synchronous}
+\nomenclature[S]{$_{mech}$}{Mechanical}
+\nomenclature[S]{$_{bearing}$}{Induction machine friction due to bearings}
+\nomenclature[S]{$_{windage}$}{Induction machine friction due to windage}
+
+A single phase equivalent circuit diagram of the generator which includes these components can be seen in \autoref{fig:SCIG__circuit_diagram}.  $R_s$ and $X_s$ represent the resistive and inductive impedances of the stator. $R_r$ and $X_r$ represent the resistive and inductive impedances of the rotor as referred to the stator. $R_c$ and $X_m$ represent the resistive and inductive impedances due to the magnetization of the core. $X_x$ represents the capacitive impedances of the external excitation capacitor. $R_{load}$ is the active portion of grid load combined with conversion losses of the inverter.
 \input{figures/SCIG_circuit_diagram}
-A single phase circuit diagram of the generator which includes these components can be seen in \autoref{fig:SCIG__circuit_diagram}. $R_s$ and $X_s$ represent the resistive and inductive impedances of the stator. $R_r$ and $X_r$ represent the resistive and inductive impedances of the rotor as referred to the stator. $R_c$ and $X_m$ represent the resistive and inductive impedances due to the magnetization of the core. $R_{esr}$ and $X_x$ represent the equivalent series resistance and capacitive impedances of the external excitation capacitor.
 
-To calculate these outputs, first the magnitude of the phase voltage is determined from the line to line voltage, $V_{ll}$, as $ \left|V_{ph}\right| = \frac{\left|V_{ll}\right|}{\sqrt{3}} $ assuming $ \angle V_{ph} = 0\deg $. Next the synchronous mechanical speed is determined by $ n_{synch} = \frac{120f}{2\text{poles}} $ and is used, along with the mechanical speed, $n_{mech}$ to calculate the slip of the machine as $ s = \frac{n_{synch} - n_{mech}}{n_{synch}} $.
+To calculate these outputs, first the rated reactance values of the induction machine $X = 2 \pi f_{rated} L$ for the inductive components and excitation capacitor reactance is calculated as $X = \frac{1}{2 \pi f_{rated} C}$. Next, the single phase equivalent load impedance is determined as $R_{load} = \frac{V_{ll}^2}{P_{total\ load} + P_{inv loss}}$. 
+%magnitude of the phase voltage is determined from the line to line voltage, $V_{ll}$, as $ \left|V_{ph}\right| = \frac{\left|V_{ll}\right|}{\sqrt{3}} $ assuming $ \angle V_{ph} = \ang{0} $. 
+The speed of the rotor relative to the synchronous speed is then calculated as $ b = \frac{n_{mech}poles}{120f_{rated}} $. With these values, a system of equations are developed to calculate the frequency and magnetization impedance necessary to balance admittances of the rotor, $Y_r$, core, $Y_m$, and combined stator, capacitance, and load, branches such that 
+\begin{equation}
+\label{eq:admit}
+Y_r + Y_m + Y_s = 0.
+\end{equation}
+Rearranging the real components yields the polynomial 
+\begin{equation*}
+K_5a^5 + K_4a^4 + K_3a^3 + K_2a^2 + K_1a + K_0 = 0
+\end{equation*}
+where $a$ is the electrical frequency relative to the synchronous value and $K_n$ is the $n^{th}$ order polynomial coefficient. %Assuming $R_{s+load} = R_s + R_{load}$, 
+\nomenclature[V]{$Y$}{Admittance\nomunit{\si{\mho}}}
+\nomenclature[V]{$a$}{Ratio of electrical frequency to synchronous frequency}
+\nomenclature[V]{$b$}{Ratio of rotor speed to synchronous speed}
 
-The impedances of the stator, rotor, core impedances, the Th\'evenin combination of those three branches, the external excitation branch, and the Th\'evenin combination of all branches are calculated as
-\begin{equation*}
-Z_s = R_s + jX_s
-\end{equation*}
-\begin{equation*}
-Z_r = R_r\frac{1-s}{s} + R_r + jX_r
-\end{equation*}
-\begin{equation*}
-Z_{core} = R_c \parallel jX_m
-\end{equation*}
-\begin{equation*}
-Z_{machine} = R_s + \left(Z_{core} \parallel Z_r\right)
-\end{equation*}
-\begin{equation*}
-Z_{excite} = R_{esr} - jX_x
-\end{equation*}
-\begin{equation*}
-Z_{total} = Z_{excite} \parallel Z_{machine}
-\end{equation*}
+%From \cite{Ouazenne1983}, 
+Each of the polynomial coefficients are calculated with the reactive impedances under rated frequency conditions as
+\begin{flalign*}
+%\begin{equation*}
+K_5 = & R_r \left(\frac{X_s}{X_x}\right)^2 + R_s \left(\frac{X_r}{X_x}\right)^2 \\
+%\end{equation*}
+%\begin{equation*}
+K_4 = & -b \Biggl(K_5 + R_s \left(\frac{X_r}{X_x}\right)^2\Biggr)\\
+%\end{equation*}
+%\begin{equation*}
+K_3 = & R_r \Biggl(\left(\frac{X_s}{R_{load}}\right)^2 + \left(\frac{R_s}{X_x}\right)^2 - 2\frac{X_s}{X_x}\Biggr) + \left(R_s + R_{load}\right) \left(\frac{X_r}{R_{load}}\right)^2 \dots \\
+& + R_s \left(\frac{R_r}{X_x}\right)^2 + b^2 R_s \left(\frac{X_r}{X_x}\right)^2 \\
+%\end{equation*}
+%\begin{equation*}
+K_2 = & -2b \left(R_s + R_{load}\right) \left(\frac{X_r}{R_{load}}\right)^2 - b R_r \bigl(\left(\frac{R_s}{X_x}\right)^2 + \left(\frac{X_s}{R_{load}}\right)^2 - 2\frac{X_s}{X_x}\bigr) \\
+%\end{equation*}
+%\begin{equation*}
+K_1 = & R_r \left(\frac{R_s + R_{load}}{R_{load}}\right)^2 + \left(R_s + R_{load}\right) \left(\frac{R2}{R_{load}}\right)^2 + b^2 \left(R_s + R_{load}\right)\left(\frac{X_r}{R_{load}}\right)^2 \\
+%\end{equation*}
+%\begin{equation*}
+K_0 = & -b R_r \left(\frac{R_s + R_{load}}{R_{load}}\right)^2
+%\end{equation*}
+\end{flalign*}
 
-Once all the relevant impedances are determined, the currents flowing through the branches are calculated along with the internal voltage at the stator-rotor-core junction. These values are used to determine internal power losses. The mechanical losses due to the bearings and windage are calculated by multiplying the appropriate coefficient of friction by the mechanical angular frequency  and the square of the mechanical angular frequency respectively. 
+Solving the polynomial yields five possible solutions for $a$. However, when the values of $b$, $R_r$, $R_s$, $R_{load}$, $X_r$, $X_s$, and $X_x$ are all real and positive, then one of the value is necessarily real and positive \cite{Ouazenne1983}. With the real component of the admittance balance equation solved, \autoref{eq:admit}, the imaginary component can be solved to obtain $X_m$ for the rated frequency.
 
+The magnetization curve is then used to determine the corresponding value of $E$ for $X_m$. If the solved value $X_m$ is outside of the given magnetization curve range, then NaN is returned for the remaining output variables and the simulation fails. Otherwise, the reactive impedances due to inductive and capacitive values are rescaled for the solved frequency such that $X = 2 \pi a f_{rated} L$ for the inductive components and $X = \frac{1}{2 \pi a f_{rated} C}$ for the capacitive value. The total impedances of the stator, $Z_s$, rotor, $Z_r$, core, $Z_{core}$, the Th\'evenin combination of those three branches, $Z_{machine}$, the external excitation branch, $Z_{excite}$, and the Th\'evenin combination of all branches, $Z_{total}$, are calculated as \cite{Chapman2005}
+\nomenclature[V]{$Z$}{Impedance\nomunit{\si{\ohm}}}
+\begin{flalign*}
+%\begin{equation*}
+Z_s = & R_s + jX_s \\
+%\end{equation*}
+%\begin{equation*}
+Z_r = & R_r\frac{1-s}{s} + R_r + jX_r \\
+%\end{equation*}
+%\begin{equation*}
+Z_{core} = & R_c \parallel jX_m \\
+%\end{equation*}
+%\begin{equation*}
+Z_{machine} = & R_s + \left(Z_{core} \parallel Z_r\right) \\
+%\end{equation*}
+%\begin{equation*}
+Z_{excite} = & R_{esr} - jX_x \\
+%\end{equation*}
+%\begin{equation*}
+Z_{total} = & Z_{excite} \parallel Z_{machine}.
+%\end{equation*}
+\end{flalign*}
+
+Once all the relevant impedances are determined, the currents flowing through the stator, rotor, and core branches are calculated along with the phase voltage across the load. These values are used to determine the output variables. The gross electrical power consumed is calculated as $P_{gen\ gross} = 3\frac{V_{ph}^2}{Z_{load}}$. 
+
+As previously stated, the active power losses due to resistance in the excitation capacitor and the core are neglected. The active electrical losses through the stator and rotor are calculated as $P_s = 3 I_s^2 R_s$ and $P_r = 3 I_s^2 R_s$, respectively. The mechanical losses due to the bearings and windage are calculated as $P_{bearing} = \omega_{mech} K_{bearing}$ \cite{pyrhonen2013design} and $P_{windage} = \omega_{mech}^2 K_{windage}$ \cite{Vrancik1968}, respectively, where $\omega_{mech} = 2 \pi \frac{n_{mech}}{60}$. The total losses of the induction machine given as $P_{gen\ loss} = P_s + P_r + P_{bearing} + P_{windage}$. The total power generated is combined with the total losses to calculated the mechanical power needed, or $P_{mech\ needed} = P_{gen\ gross} + P_{gen\ loss}$. Finally, the output line to line voltage magnitude is calculated as $\left|V_{ll}\right| = \sqrt{3}\left|V_{ph}\right|$ to feed back to the input for the next iteration.
+\nomenclature[V]{$\omega$}{Angular frequency\nomunit{\si{\radian\per\second}}}
+
+\begin{comment}
 \subsubsection{Unregulated SCIG}
-To simulate microgrids with no forms of storage or sources beyond the ORC, an unregulated SCIG model was developed. The single phase diagram is similar to the regulated SCIG seen in \autoref{fig:SCIG__circuit_diagram}, except the voltage source $V_{ph}$ at the lead is replaced with a resistive load. The model is based off the analysis by Ouazenne et al. of a self excited induction generator in \cite{Ouazenne1983} using admittance balancing. It is assumed the active power losses across the core and the excitation capacitance are negligible. Additionally, it is assumed the load is purely active, as any reactive load can be supplied by the conversion device which regulates the voltage and frequency of the microgrid.
+To simulate microgrids with no forms of storage or sources beyond the ORC, an unregulated SCIG model was developed. The single phase equivalent circuit is similar to the regulated SCIG circuit seen in \autoref{fig:SCIG__circuit_diagram}, except the voltage source $V_{ph}$ at the output terminals of the machine is replaced with a resistive load. The model is based off the analysis by Ouazenne et al. of a self excited induction generator in \cite{Ouazenne1983} using admittance balancing. It is assumed the active power losses across the core and the excitation capacitance are negligible. Additionally, it is assumed the load is purely active, as any reactive load can be supplied by the conversion device which regulates the frequency and voltage of the microgrid.
 
-The method of admittance balancing relies on the fact active and reactive power entering and exiting an electrical node must sum to zero. For this analysis, the chosen node at which the rotor, the core, and the combination of the stator, excitation capacitor, and load meet. Since the voltage across each branch is the same and power flow sums to zero, then the admittances must sum to zero as well. By breaking the complex admittances into real and imaginary components, a system of equations can be developed to solve for frequency and core reactance. 
+The method of admittance balancing relies on the fact that active and reactive power entering and exiting an electrical node must sum to zero. For this analysis, the chosen node is where the rotor, the core, and the combination of the stator, excitation capacitor, and load meet. Since the voltage across each branch is the same and power flow sums to zero, the admittances must sum to zero as well. By breaking the complex admittances into real and imaginary components, a system of equations can be developed to solve for frequency and core reactance. 
 %A more detailed description of this process can be seen in Appendix \autoref{ap:SEIG}. 
 These values can then be used to determine total power output and losses. 
 
-The function takes as variable inputs the mechanical speed of the shaft (\si{\rpm}), the power load of the microgrid (\si{\watt}), and the line to line voltage at the lead (\si{\volt}). Also input as parameters are the rated frequency of machine (\si{\hertz}), the number of poles it contains, the resistances and inductances of the rotor and stator (\si{\ohm}, \si{\henry}), the capacitance of external excitation capacitors (\si{\farad}), coefficients of friction due to bearings (\si{\watt\per\second}) and windage (\si{\watt\per\second\squared}), and the magnetization curve comparing the core reactance (\si{\ohm}) to the internal voltage across the core (\si{\volt}). The output variables of the function include active power generated (\si{\watt}) and internally consumed (\si{\watt}), the reactive power consumed (\si{\voltampreactive}), the necessary mechanical power driving the shaft (\si{\watt}), the line to line voltage (\si{\volt}), and the electrical frequency (\si{\hertz}).
+The function takes as variable inputs the mechanical speed of the shaft (\si{\rpm}), the power load of the microgrid (\si{\watt}) and the line to line voltage at the lead (\si{\volt}). Other inputs to the function block are the rated frequency of machine (\si{\hertz}), the number of poles, the resistances (\si{\ohm}) and inductances (\si{\henry}) of the rotor and stator, the capacitance of the external excitation capacitors (\si{\farad}), coefficients of friction due to bearings (\si{\watt\per\second}) and windage (\si{\watt\per\second\squared}), and the magnetization curve comparing the core reactance (\si{\ohm}) to the internal voltage across the core (\si{\volt}). The output variables of the function include active power generated (\si{\watt}) and internally consumed (\si{\watt}), the reactive power consumed (\si{\voltampreactive}), the necessary mechanical power driving the shaft (\si{\watt}), the line to line voltage (\si{\volt}), and the electrical frequency (\si{\hertz}).
 
 First the inductive and capacitive reactances of the rotor, stator, and external excitation capacitors are calculated at the rated frequency of the machine, along with the equivalent load resistance for the given input voltage. Next, the electrical frequency is calculated based off the real portion of the admittance balance equations. With the frequency the machine slip can be determined as well. Next, the imaginary portion of the admittance balance equation can be used to solve for the core reactance. Internal voltage of the machine is then interpolated from the core reactance based off of the magnetization curves. The new line voltage is determined as well to feed back into the next iteration of the function.
 
-With all components of the machine known, the power output and losses can be calculated in the same manner as the regulated induction generator seen above. The power generated is fed into the input of the inverter block and the losses are used in the feedback control.
+With all components of the machine known, the power output and losses can be calculated in the same manner as the regulated induction generator seen above. The power generated, $P_{gen\ gross}$, is fed into the input of the inverter block and the losses, $P_{gen\ loss}$ are used in the feedback control.
+\end{comment}
 
 \section{Inverter}
-The inverter block converts the unregulated power output from the generator into a form with a stable frequency and voltage. In this model, a simplified view is taken of its operation. The inputs include the inverter's efficiency, $\eta$, and the unregulated power off of the induction generator (\si{\watt}). The outputs include the delivered power to the load calculated as $P_{out} = \eta P_{in}$  and the power lost within the inverter (\si{\watt}) calculated as $P_{loss} = P_{in} - P_{out}$. 
+The inverter block is a grid-forming VSI. It converts the unregulated power output from the generator into a form with a stable frequency and voltage. In this model, a simplified view is taken of its operation. The inputs include the inverter's efficiency, $\eta$, and the unregulated power off of the induction generator (\si{\watt}). The outputs include the delivered power to the load calculated as $P_{out} = \eta P_{gen\ gross}$ and the power lost within the inverter (\si{\watt}) calculated as $P_{inv\ loss} = P_{gen\ gross} - P_{out}$. 
 
 \section{Load}
-The model is assumes the microgrid delivers power to a three-phase \SI{60}{\hertz} AC load. The total load in the model is determined by the sum of a predefined set point and the power consumed by the pump used to circulate the working fluid. The electrical power of the pump is determined by dividing the mechanical power output of pump function by the efficiency of the pump driver. In addition to the active load, it is assumed there is a reactive load determined by a predefined power factor parameter. 
+The model is assumes the microgrid delivers power to a three-phase \SI{60}{\hertz} AC load. The total load in the model is determined by the sum of a predefined set point, $P_{load}$, and the electrical power consumed by the pump used to circulate the working fluid, $P_{pump}$. The electrical power of the pump is determined by dividing the mechanical power output of pump function by the efficiency of the pump driver. In addition to the active load, it is assumed there is a reactive load determined by a predefined power factor parameter. 
 The load seen by the unregulated induction generator is the sum of the total load and the losses due to the inverter. 
 
-The total load is combined with both the inverter and generator losses in order to provide the reference of a PI controller. The sum is then compared to the output mechanical power of the ORC system. A gain is applied to the error signal and integrated to provide the desired flow rate of the working fluid. The gain value was selected in order to quickly reach steady state during the simulation.
-
-\section{Validation}
-Before simulating  the greenfield and brown field scenarios, the model needs to be validated. This is done using the results of an ORC test at the University of Alaska Fairbanks conducted in 2013 \cite{Lin2014}. The report details the process of testing an Electratherm Green Machine ORC system in a controlled environment at the UAF power plant and in the field for waste heat reclamation of a diesel generator at the Tok, Alaska powerhouse.
-
-During the sizing of the ORC system turbine and pump efficiencies as well as heat exchanger areas and transfer coefficients were assumed based off publications and conventional practice, but final values were not reported. These assumed values are used as the input of the model. All of the non-variable ORC parameters for the validation can be seen in \autoref{tab:verification_ORC_params}.
-\input{tables/Verification_ORC_params}
-
-The only reported electrical parameters of the three-phase induction generator were the frequency (\SI{60}{\hertz}), and the voltage (\SI{480}{\volt}). The impedance parameters were taken from a 10 HP machine in \cite{Ouazenne1983} and scaled based off the expected relative power output. The external excitation capacitance was selected in order to yield a terminal voltage roughly equal to the rated voltage. The impedance parameters can be seen in \autoref{tab:verification_SCIG_params}.
-% and the magnetization curve comparing internal voltage, $E$, and the magnetizing reactance at rated frequency, $X_m$, can be seen in Fig X.
-\input{tables/Verification_SCIG_params}
-%\input{figures/magCurve}
-
-Four loads were simulated under different combinations of heat sink flow rates and heat source temperatures and flow rates, as well as high and low pressure values. \autoref{tab:verification_ORC_vars} shows the input variables for each scenario. For the verification, pressure values were measured, but not explicitly detailed. Instead, pressure ranges were reported, so estimated values within the ranges were used for the model. The working fluid flow rate could not be used as an input to the model because it was also not reported. Instead the model uses load power set points such that the gross power produced by the simulation approximately matches that of the reports and returns the necessary working fluid flow rate to achieve that output.  
-\input{tables/Verification_ORC_vars}
-
-\autoref{tab:verification_results01} compares measured and simulated values of the gross power output (\si{\kilo\watt}), the consumed pump power (\si{\kilo\watt}), the heat input from hot water (\si{\kilo\watt}), the heat rejected to cold water (\si{\kilo\watt}), and the output temperatures of the source and sink (\si{\kelvin}). 
-\input{tables/Verification_results}
-
-As desired, the gross electrical power output of the model matches the measured value for each set of inputs. However, the power consumed to run the pump is a factor of 2-3 greater in the model than what was measured. A pump sizing guide \cite{CheGuide2017} was used to calculate hypothetical hydrolic power needed to move a liquid at the density of R245-fa across each of the pressure differences listed at the corresponding flow rates. When these hydrolic power values have the assumed pump and drive efficiencies applied as well they match the pump power values of the model. This indicates the working fluid flow rates of the model are much greater the operating values of the measured ORC system.
-
-The calculated heat transferred in both the evaporator and the condenser are greater than what was measured in each case. Although the values do tend to follow a similar pattern: Higher source temperatures and water flow rates result in greater rates of heat transferred. Additionally, the source and sink fluids undergo a greater temperature change in the model as a result of the larger heat flows.
+The total load is combined with both the inverter and generator losses in order to provide the reference of a PI controller. The sum is then compared to the output mechanical power of the ORC system. A gain is applied to the error signal and integrated to provide the desired flow rate of the working fluid. The gain value was selected in order to quickly reach steady state during the simulation. The full diagram of the model, seen in \autoref{fig:full_flow_diagram_label}, shows the flow of data from the input variables to the output variables.
+%\input{figures/full_flow_diagram}
 
 
-%The likely reason for the difference in heat flows is model assumes all the heat flows from one fluid to another and does not affect the ambient temperature. This is also a possible explanation for higher pump power consumptions seen in the model. With both more heat being added and removed from the working fluid, but the same amount of mechanical power being extracted from it, the fluid is likely being 
-
-\input{figures/verificationPH01}
-Pressure was plotted against enthalpy at various points of the cycle in \autoref{fig:verifcation_ph01} for each of the four tests. The two curves indicate the pressure-enthalpy combinations of R245-fa where the fluid begins to condense and vaporize. The top-left group of points represent the fluid at the outlet of the pump. The top-right group represent the fluid at the inlet of the expander. The bottom-right group represent the fluid at the outlet of the expander. Finally, The bottom-left group represent the fluid at the inlet of the pump.
-
-For each of these tests, the fluid just barely begins to boil in the evaporator, if at all. It is expected that the fluid will either completely vaporize, or at least be further to the right in the liquid-vapor region. Along with the higher than expected pump power, this also indicates that there is more fluid being pumped along the cycle in the model than what was measured.
-
-To re-create conditions where the system outputs comparable power while pumping less fluid, the evaporator area is increased by a factor of four so it is comparable to the area of the condenser. Additionally, the pressure set points are adjusted to values seen in \autoref{tab:verification_ORC_vars02} to account for the new temperatures of the working fluid.
-\input{tables/Verification_ORC_vars02}
-
-\autoref{tab:verification_results02} shows the new results verifications tests. As expected, the gross output power remained roughly equal to the measured values. The consumed pump power decreased significantly. The calculated power values are now about half the measured ones, indicating the fluid is moving at a slower rate. The thermal power measurements are now greater than the calculated values by about \SIrange{30}{80}{\kilo\watt} and the source and sink outlet temperatures are correspondingly higher and lower. \autoref{fig:verifcation_ph02} shows the lower mass flow rate of working fluid allows it to fully vaporize due to the larger transfer area of the evaporator. 
-\input{tables/Verification_results02}
-\input{figures/verificationPH02}
+\cleardoublepage

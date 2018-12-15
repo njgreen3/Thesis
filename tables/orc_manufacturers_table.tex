@@ -1,31 +1,44 @@
 \begin{table}
 \centering
-\caption{Manufacturers and Developers of Organic Rankine Cycle systems.}
-\label{tab:orc_manufacturers}
+\caption{Manufacturers and developers of ORCs under development with less than ten documented installed systems. Also listed are the working fluids, mechanical drives, approximate rated operating speed, generator type, and rated output.}
+\label{tab:orc_manufacturers_dev}
+\rowcolors{1}{white}{gray!25}
 
-\begin{tabular}[c]{|p{3.0cm}|p{3.0cm}|p{3.0cm}|p{1.5cm}|p{3.0cm}|p{2.0cm}|}
-	\hline
-	\multicolumn{6}{|c|}{ \multirow{2}{*}{\textbf{Under Development} (fewer than 10 documented installed systems)}}	\\ 
-	\multicolumn{6}{|c|}{}	\\ \hline
-	\textbf{Company}          & \textbf{Working Fluid}         & \textbf{Mech. Drive} & \textbf{Max RPM}   & \textbf{Generator}  & \textbf{Size (kW)}  \\ \hline
-	Air Squared               &                                & Scroll                    & 2600           &                     & 12 \\ \hline
-	Termo2Power (Broken link) & R245fa                         & Rotary Lobe               &            &                     & 10 to 300 \\ \hline
-	Climeon                   &                                & turbine                   &            &                     & 150 \\ \hline
-	Calnetix/Access Energy    & R245fa                         & turbine                   & 30000          & PMSG                & 125 \\ \hline
-	Verdicorp                 &                                & turbine                   & 45000          & PMSG                & 65 to 380 \\ \hline
-	Inifinity Turbine         & R245fa, supercritical $CO_2$   & Radial Outflow Turbine    & 3600           & DC \& induction     & 10, 50 \\ \hline
-	Ener-G-Rotors             &                                & Trochoidal Gear Engine using ge-rotor &    &                  & 40, 60 \\ \hline
-	Phoenix                   & R245fa, Novec-649, Cyclohexane &                           &            &                     & 25, 50, 100, 250 \\ \hline
-	\multicolumn{6}{|c|}{\multirow{2}{*}{\textbf{Commercial Products} (more than 10 documented installed systems)}}	\\ 
-	\multicolumn{6}{|c|}{}	\\ \hline
-	\textbf{Company}          & \textbf{Working Fluid}         & \textbf{Mech. Drive}   & \textbf{Max RPM}  & \textbf{Generator}  & \textbf{Size (kW)}  \\ \hline
-	Electratherm              & R245fa                         & twin screw                & 5000           & induction generator & 35, 65, 110 \\ \hline
-	E-Rationale               & R245fa, SES36                  & single screw radial inflow & 3600          & induction generator & 55, 75, 110, 132 \\ \hline
-	Exergy                    &                                & Radial outflow turbine    &            &                     & 125 \& up \\ \hline
-	Zuccato                   & hydrofluoro-carbon mixture      & Radial inflow turbine     & 18000          & PMSG                & 30, 40, 50 \\ \hline
-	Enogia                    & R245fa                         & turbine                   &            &                     & 10, 20, 40, 100\\ \hline
-	Clean Energy Technologies & R245fa                         & turbine                   & 27500          &                     & 125 \\ \hline
-	Tri-O-Gen                 &                                & turbine                   &            &                     & 165 \\ \hline
+\begin{tabular}[c]{p{2.7cm}p{2.8cm}p{2.0cm}p{1.5cm}p{1.6cm}p{2.0cm}}%{lllrlr}%
+	\toprule
+	%\multicolumn{6}{c}{ \multirow{2}{*}{\textbf{Under Development} (fewer than 10 documented installed systems)}}	\\ \midrule
+	%\multicolumn{6}{c}{ \textbf{Under Development} (fewer than 10 documented installed systems)}	\\ \midrule
+	%\multicolumn{6}{c}{}	\\ \hline
+	%\rowcolor[gray]{5}
+	\textbf{Company}		& \textbf{Working Fluid}		& \textbf{Mech. Drive} 		& \textbf{Rated RPM}	& \textbf{Gen. Type}	& \textbf{Size (kW)}  \\
+	\midrule
+	Air Squared				& 									& Scroll					& 2600 			& 						& 12 \\ 
+	Termo2Power				& R245-fa							& Rotary Lobe				& 				& 						& \numrange{10}{300} \\ 
+	Climeon					& 									& Turbine					& 				& 						& 150 \\ 
+	Calnetix/ Access Energy	& R245-fa							& Turbine					& 30000			& PMSG					& 120 \\ 
+	Verdicorp				&									& Turbine					& 45000			& PMSG 					& \numrange{65}{380} \\ 
+	Inifinity Turbine		& R245-fa, supercrit. \ch{CO2}		& Radial Outflow Turbine	& 3600			& Induction \& DC 		& \numlist{10;50} \\ 
+	Ener-G-Rotors			& 									& Trochoidal Gear Engine using ge-rotor &	&  						& \numlist{40;60} \\ 
+	Phoenix					& R245-fa, Novec-649, Cyclohexane	& 							& 				& 						& \numlist{25;50;100;250} \\ \bottomrule
+\end{tabular}
+\end{table}
+	
+\begin{table}
+\centering
+\caption{Manufacturers and developers of commercial ORCs with more than ten documented installed systems. Also listed are the working fluids, mechanical drives, approximate rated operating speed, generator type, and rated output.}
+\label{tab:orc_manufacturers_com}
+\rowcolors{1}{white}{gray!25}	
+\begin{tabular}[c]{p{3.0cm}p{2.5cm}p{2.0cm}p{1.5cm}p{1.6cm}p{2.0cm}}%{lllrlr}%
+	\toprule
+	\textbf{Company}          & \textbf{Working Fluid}		& \textbf{Mech. Drive}			& \textbf{Rated RPM}	& \textbf{Gen. Type}	& \textbf{Size (kW)}  \\
+	\midrule
+	Electratherm              & R245-fa 					& Twin Screw 					& 5000				& Induction  			& \numlist{35;65;110} \\ 
+	E-Rationale               & R245-fa, SES36 				& Single Screw Radial Inflow	& 3600				& Induction				& \numlist{55;75;110;132} \\ 
+	Exergy                    &								& Radial Outflow Turbine		&            		& 						& 125 and up \\ 
+	Zuccato                   & Hydrofluoro-carbon mixture	& Radial Inflow Turbine			& 18000				& PMSG 					& \numlist{30;40;50} \\ 
+	Enogia                    & R245-fa						& Turbine 						& 					& 						& \numlist{10;20;40;100}\\ 
+	Clean Energy Technologies & R245-fa						& Turbine 						& 27500				& 						& 125 \\ 
+	Tri-O-Gen                 & 							& Turbine 						& 					& 						& 165 \\ \bottomrule
 
 \end{tabular}
 \end{table}
